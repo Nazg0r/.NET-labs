@@ -1,0 +1,6 @@
+services:
+  postgresDb:
+    image: postgres
+
+volumes:
+    postgres: 
