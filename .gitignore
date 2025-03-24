@@ -484,3 +484,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/Server/src/PlagiarismChecker.Presentation/appsettings.Development.json
+/Server/src/PlagiarismChecker.Presentation/appsettings.Development.json
