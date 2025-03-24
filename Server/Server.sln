@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "src\Plagiaris
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\PlagiarismChecker.Presentation\Presentation.csproj", "{30BF81B2-4548-433A-B9C2-B0E74C50C3D9}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{71724E70-33E9-4288-9BE7-961D59CC3872}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{30BF81B2-4548-433A-B9C2-B0E74C50C3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30BF81B2-4548-433A-B9C2-B0E74C50C3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30BF81B2-4548-433A-B9C2-B0E74C50C3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71724E70-33E9-4288-9BE7-961D59CC3872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71724E70-33E9-4288-9BE7-961D59CC3872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71724E70-33E9-4288-9BE7-961D59CC3872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71724E70-33E9-4288-9BE7-961D59CC3872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
