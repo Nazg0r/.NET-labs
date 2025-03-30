@@ -1,6 +1,8 @@
-﻿namespace DataAccess.Data
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+namespace DataAccess.Data
 {
-	public class DataContext(DbContextOptions opt) : DbContext(opt)
+	public class DataContext(DbContextOptions<DataContext> opt)
+		: IdentityDbContext<Student>(opt)
 	{
 		public DbSet<Student> Students { get; set; }
 		public DbSet<StudentWork> StudentWorks{ get; set; }
