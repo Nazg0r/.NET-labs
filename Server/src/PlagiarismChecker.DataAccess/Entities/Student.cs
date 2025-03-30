@@ -1,6 +1,8 @@
-﻿namespace DataAccess.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace DataAccess.Entities
 {
-	public class Student : Entity
+	public class Student : IdentityUser
 	{
 		[Column("name")]
 		public string Name { get; set; } = default!;

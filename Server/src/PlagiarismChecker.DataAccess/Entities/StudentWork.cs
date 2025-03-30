@@ -1,7 +1,9 @@
 ﻿namespace DataAccess.Entities
 {
-	public class StudentWork : Entity
+	public class StudentWork
 	{
+		[Column("id")]
+		public Guid Id { get; set; }
 		[Column("file_name")]
 		public string FileName { get; set; } = default!;
 		[Column("load_date")]
