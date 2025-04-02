@@ -13,7 +13,7 @@
 		[Column("content")]
 		public byte[] Content { get; set; } = default!;
 		[Column("student_id")]
-		public Guid StudentId { get; set; }
+		public string StudentId { get; set; } = default!;
 		public Student Student { get; set; } = default!;
 	}
 }

@@ -15,6 +15,11 @@ namespace DataAccess.Data
 				.HasMany(w => w.Works)
 				.WithOne(s => s.Student)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<StudentWork>()
+				.HasOne(s => s.Student)
+				.WithMany(w => w.Works)
+				.HasForeignKey(w => w.StudentId);
 		}
 	}
 }
