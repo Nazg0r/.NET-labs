@@ -1,4 +1,4 @@
-﻿namespace Presentation.DTOs
+﻿namespace Shared.DTOs
 {
 	public class StudentWorkResponseDto
 	{
@@ -6,6 +6,6 @@
 		public string FileName { get; set; } = default!;
 		public DateTime LoadDate { get; set; }
 		public byte[] Content { get; set; } = default!;	
-		public Guid StudentId { get; set; }
+		public string StudentId { get; set; } = default!;
 	}
 }
