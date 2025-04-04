@@ -7,6 +7,7 @@ namespace Presentation.Extensions
 	{
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
+			services.AddSingleton<IStudentWorkService, StudentWorkService>();
 			services.AddScoped<IAuthentificationService, AuthentificationService>();
 			services.AddScoped<IStudentService, StudentService>();
 			return services;
