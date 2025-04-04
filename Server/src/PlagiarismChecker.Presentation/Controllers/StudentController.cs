@@ -4,7 +4,10 @@ using Shared.DTOs;
 
 namespace Presentation.Controllers
 {
-	public class StudentController(IAuthentificationService authentificationService)
+	public class StudentController(
+		IAuthentificationService authentificationService,
+		IStudentService studentService
+		)
 		: BaseController
 	{
 		[HttpPost("register")]
@@ -19,6 +22,14 @@ namespace Presentation.Controllers
 		public async Task<ActionResult> Login(LoginRequestDto request)
 		{
 			var response = await authentificationService.LoginAsync(request);
+
+			return Ok(response);
+		}
+
+		[HttpGet("{username}")]
+		public async Task<ActionResult> GetStudentByUsername(string username)
+		{
+			var response = await studentService.GetStudentByUsernameAsync(username);
 
 			return Ok(response);
 		}
