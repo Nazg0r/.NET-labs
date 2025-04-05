@@ -11,7 +11,15 @@ namespace Presentation.Extensions
 	{
 		public static IServiceCollection AddCustomAuthentification(this IServiceCollection services, IConfiguration conf) 
 		{
-			services.AddIdentity<Student, IdentityRole>()
+			services.AddIdentity<Student, IdentityRole>(opt =>
+			{
+				opt.Password.RequiredLength = 8;
+				opt.Password.RequireDigit = false;
+				opt.Password.RequireLowercase = true;
+				opt.Password.RequireUppercase = false;
+				opt.Password.RequiredUniqueChars = 4;
+				opt.Password.RequireNonAlphanumeric = false;
+			})
 				.AddEntityFrameworkStores<DataContext>()
 				.AddDefaultTokenProviders();
 
