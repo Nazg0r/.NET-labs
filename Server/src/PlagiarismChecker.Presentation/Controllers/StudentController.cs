@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
 
@@ -11,16 +12,24 @@ namespace Presentation.Controllers
 		: BaseController
 	{
 		[HttpPost("register")]
-		public async Task<ActionResult> Register(RegistrationRequestDto request)
+		public async Task<ActionResult> Register(
+			RegistrationRequestDto request, 
+			IValidator<RegistrationRequestDto> validator)
 		{
+			validator.ValidateAndThrow(request);
+
 			await authentificationService.RegisterAsync(request);
 
 			return Created();
 		}
 
 		[HttpPost("login")]
-		public async Task<ActionResult> Login(LoginRequestDto request)
+		public async Task<ActionResult> Login(
+			LoginRequestDto request, 
+			IValidator<LoginRequestDto> validator)
 		{
+			validator.ValidateAndThrow(request);
+
 			var response = await authentificationService.LoginAsync(request);
 
 			return Ok(response);

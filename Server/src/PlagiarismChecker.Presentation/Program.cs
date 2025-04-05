@@ -1,4 +1,5 @@
 using DataAccess.Data;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Extensions;
 
@@ -10,10 +11,11 @@ builder.Services.AddDbContext<DataContext>(opt =>
 	opt.UseNpgsql(connectionString);
 }, ServiceLifetime.Singleton);
 
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
+builder.Services.AddControllers();
+builder.Services.AddServices();
 builder.Services.AddRepositories();
 builder.Services.AddCustomAuthentification(builder.Configuration);
-builder.Services.AddServices();
-builder.Services.AddControllers();
 
 var app = builder.Build();
 
