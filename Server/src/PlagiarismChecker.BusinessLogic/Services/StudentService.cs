@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Errors;
+﻿using Shared.Errors;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Mappers;
 using DataAccess.Entities;

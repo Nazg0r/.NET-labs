@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Errors
+﻿namespace Shared.Errors
 {
 	public class NotFoundException : Exception
 	{
