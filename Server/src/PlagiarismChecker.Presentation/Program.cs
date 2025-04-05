@@ -1,11 +1,13 @@
 using DataAccess.Data;
 using FluentValidation;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Extensions;
 using Shared.Errors.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("Database");
+var connectionString = builder.Configuration.GetConnectionString("Database")!;
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
@@ -18,6 +20,7 @@ builder.Services.AddServices();
 builder.Services.AddRepositories();
 builder.Services.AddCustomAuthentification(builder.Configuration);
 builder.Services.AddExceptionHandler<CustomErrorHandler>();
+builder.Services.AddHealthChecks().AddNpgSql(connectionString);
 
 var app = builder.Build();
 
@@ -26,5 +29,10 @@ app.MapControllers();
 app.UseAuthentication();
 
 app.UseExceptionHandler(opt => { });
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
