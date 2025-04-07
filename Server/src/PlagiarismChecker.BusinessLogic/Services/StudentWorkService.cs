@@ -5,6 +5,7 @@ using DataAccess.Interfaces;
 using Shared.DTOs;
 using Microsoft.AspNetCore.Http;
 using DataAccess.Entities;
+using System.Text;
 
 
 namespace BusinessLogic.Services
@@ -55,6 +56,72 @@ namespace BusinessLogic.Services
 			var result = await studentWorkRepository.DeleteWorkAsync(id);
 
 			return;
+		}
+
+		public async Task<List<PlagiarismResponseDto>> GetPercentagesAsync(Guid id)
+		{
+			var allWorks = await studentWorkRepository.GetAllWorksAsync();
+			var selectedWork = allWorks.FirstOrDefault(w => w.Id == id);
+
+			if (selectedWork is null) throw new StudentWorkNotFoundException(id);
+
+			var matchingWorks = allWorks.Where(w => 
+			w.Extension == selectedWork.Extension &&
+			!w.Id.Equals(selectedWork.Id));
+
+			var percentages = matchingWorks.Select(w => new PlagiarismResponseDto()
+			{
+				Id = w.Id,
+				Name = w.FileName,
+				SimilarityPercentage = CalculatePercentage(
+					Encoding.UTF8.GetString(selectedWork.Content),
+					Encoding.UTF8.GetString(w.Content)
+					)
+			})
+			.OrderByDescending(p => p.SimilarityPercentage)
+			.ToList();
+
+			return percentages;
+		}
+
+		private double CalculatePercentage(string firsText, string secondText)
+		{
+			var firstWordDictionary = GetWordFrequency(firsText);
+			var secondWordDictionary = GetWordFrequency(secondText);
+
+			List<string> words = firstWordDictionary.Keys
+				.Union(secondWordDictionary.Keys)
+				.Distinct()
+				.ToList();
+
+			double dotProduct = 0;
+			double firstMagnitude = 0;
+			double secondMagnitude = 0;
+
+			foreach (var word in words) 
+			{
+				firstWordDictionary.TryGetValue(word, out int firstCount);
+				secondWordDictionary.TryGetValue(word, out int secondCount);
+
+				dotProduct += firstCount * secondCount;
+				firstMagnitude += Math.Pow(firstCount, 2);
+				secondMagnitude += Math.Pow(secondCount, 2);
+			}
+			firstMagnitude = Math.Sqrt(firstMagnitude);
+			secondMagnitude = Math.Sqrt(secondMagnitude);
+
+			var result = firstMagnitude * secondMagnitude == 0 ? 0 :
+			   (dotProduct / (firstMagnitude * secondMagnitude)) * 100;
+
+			return Math.Round(result, 2);
+		}
+
+		private Dictionary<string, int> GetWordFrequency(string text)
+		{
+			var words = text.ToLower().Split(new[] { ' ', '.', ',', '!', '?', ';', ':', '\n', '\r', '\t' },
+							  StringSplitOptions.RemoveEmptyEntries);
+
+			return words.GroupBy(w => w).ToDictionary(g => g.Key, g => g.Count());
 		}
 	}
 }
