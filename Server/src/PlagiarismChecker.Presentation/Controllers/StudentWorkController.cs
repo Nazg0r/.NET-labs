@@ -38,5 +38,14 @@ namespace Presentation.Controllers
 
 			return NoContent();
 		}
+
+		[HttpGet("plagiarism/{id}")]
+		public async Task<ActionResult<PlagiarismResponseDto>> GetPlagiarismPercentages(Guid id)
+		{
+			List<PlagiarismResponseDto> response = 
+				await studentWorkService.GetPercentagesAsync(id);
+
+			return Ok(response);
+		}
 	}
 }
