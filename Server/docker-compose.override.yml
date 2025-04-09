@@ -10,3 +10,9 @@ services:
      - "5433:5432"
     volumes:
      - postgres:/var/lib/postgresql/data/
+  
+  distributedCache:
+    container_name: redis
+    restart: always
+    ports:
+    - "6379:6379"

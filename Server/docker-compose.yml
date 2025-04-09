@@ -1,6 +1,9 @@
 services:
   postgresDb:
     image: postgres
+    
+  distributedCache:
+    image: redis
 
 volumes:
     postgres: 

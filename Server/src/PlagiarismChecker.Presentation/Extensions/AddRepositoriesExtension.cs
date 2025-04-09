@@ -8,6 +8,7 @@ namespace Presentation.Extensions
 		public static IServiceCollection AddRepositories(this IServiceCollection services) 
 		{
 			services.AddSingleton<IStudentWorkRepository, StudentWorkRepository>();
+			services.Decorate<IStudentWorkRepository, CachedStudentWorkRepository>();
 			return services;
 		}
 	}
