@@ -2,7 +2,18 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { JWTInterceptorService } from './src/pages/authentification/JWTInterceptor.service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JWTInterceptorService,
+      multi: true,
+    },
+  ],
 };
