@@ -20,6 +20,17 @@ builder.Services.AddStackExchangeRedisCache(opt =>
 	opt.Configuration = connectionStringCache;
 });
 
+builder.Services.AddCors(opt =>
+{
+	opt.AddPolicy("AllowFront", policy =>
+	{
+		policy.WithOrigins("http://localhost:4200")
+			.AllowCredentials()
+			.AllowAnyHeader()
+			.AllowAnyMethod();
+	});
+});
+
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 builder.Services.AddControllers();
 builder.Services.AddServices();
@@ -31,6 +42,8 @@ builder.Services.AddHealthChecks()
 	.AddRedis(connectionStringCache);
 
 var app = builder.Build();
+
+app.UseCors("AllowFront");
 
 app.MapControllers();
 
