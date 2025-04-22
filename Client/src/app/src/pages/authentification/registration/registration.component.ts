@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { routes } from '../../../app.routes';
+import { routes } from '../../../../app.routes';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css', '../../../app.component.css'],
+  styleUrls: ['./registration.component.css', '../../../../app.component.css'],
 })
 export class RegistrationComponent implements OnInit {
   private destroyRef = inject(DestroyRef);

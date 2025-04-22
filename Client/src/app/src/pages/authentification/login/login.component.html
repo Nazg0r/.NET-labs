@@ -1,0 +1,32 @@
+<div class="container">
+  <h2 class="form__title">Login</h2>
+  <form action="#" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="control">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        class="form__input"
+        formControlName="username"
+      />
+      @if (isControlInvalid(loginForm.controls.username)) {
+        <p class="control__error">
+          * Username must be at least 6 characters long
+        </p>
+      }
+    </div>
+    <div class="control">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        class="form__input"
+        formControlName="password"
+      />
+    </div>
+    @if (isControlInvalid(loginForm.controls.password)) {
+      * Password must be at least 8 characters long
+    }
+    <button class="btn" type="submit">Submit</button>
+  </form>
+</div>
