@@ -1,0 +1,73 @@
+<div class="container">
+  <h2 class="form__title">Register New Account</h2>
+  <form action="#" [formGroup]="regForm" (ngSubmit)="onSubmit()">
+    <div class="control">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        class="form__input"
+        formControlName="username"
+      />
+      @if (isControlInvalid(regForm.controls.username)) {
+        <p class="control__error">
+          * Username must be at least 6 characters long
+        </p>
+      }
+    </div>
+
+    <div class="control__group">
+      <div class="control">
+        <label for="name">First name</label>
+        <input
+          type="text"
+          id="name"
+          class="form__input"
+          formControlName="name"
+        />
+        @if (isControlInvalid(regForm.controls.name)) {
+          <p class="control__error">* First name is required</p>
+        }
+      </div>
+      <div class="control">
+        <label for="surname">Last name</label>
+        <input
+          type="text"
+          id="surname"
+          class="form__input"
+          formControlName="surname"
+        />
+        @if (isControlInvalid(regForm.controls.surname)) {
+          <p class="control__error">* Last name is required</p>
+        }
+      </div>
+    </div>
+    <div class="control">
+      <label for="group">Group</label>
+      <input
+        type="text"
+        id="group"
+        class="form__input"
+        formControlName="group"
+      />
+      @if (isControlInvalid(regForm.controls.group)) {
+        <p class="control__error">* Incorrect group format</p>
+      }
+    </div>
+    <div class="control">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        class="form__input"
+        formControlName="password"
+      />
+      <p class="control__error">
+        @if (isControlInvalid(regForm.controls.password)) {
+          * Password must be at least 8 characters long
+        }
+      </p>
+    </div>
+    <button class="btn" type="submit">Submit</button>
+  </form>
+</div>

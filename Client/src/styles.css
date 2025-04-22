@@ -1,0 +1,68 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --page-width: 1400px;
+  --primary-color: #2c78b4;
+  --primary-color-light: #6092b9;
+  --primary-color-mega-light: #e1eefa;
+  --error-color: #d9534f;
+  --error-color-light: #ffedec;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+html {
+  font-family: "Open Sans", sans-serif;
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 2px solid #111;
+  padding: 4px 16px;
+  box-shadow: 3px 3px 6px #aaa;
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+  cursor: pointer;
+  transform: translateY(0);
+
+  &:hover {
+    background-color: var(--primary-color-light);
+    transform: translateY(2px);
+    box-shadow: 1px 1px 3px #888;
+  }
+
+  &:active {
+    transform: translateY(4px) scale(0.97);
+    box-shadow: 0px 0px 1px #666 inset;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+form .btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+}

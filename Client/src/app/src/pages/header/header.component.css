@@ -1,0 +1,41 @@
+header {
+  display: flex;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.navigation {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.register {
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: bold;
+  transition: all ease-in-out 0.3s;
+  user-select: none;
+
+  &:hover {
+    color: var(--primary-color-light);
+    transform: translateY(0.3rem);
+  }
+
+  &:active, &:focus {
+    animation: click 0.3s forwards;
+  }
+}
+
+.logo {
+  width: 120px;
+}
+
+:host {
+  display: block;
+  border-bottom: 1px solid var(--primary-color);
+  box-shadow: 5px 0 5px var(--primary-color-light);
+}

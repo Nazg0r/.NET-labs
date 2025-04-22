@@ -1,0 +1,16 @@
+<header>
+  <a routerLink="" class="logo">
+    <img src="logo.png" alt="logo picture" />
+  </a>
+  <nav class="navigation">
+    @if (authService.getAuthenticationStatus) {
+      <p>"USER NAME"</p>
+      <a routerLink="login/" (click)="authService.logout()" class="login btn">
+        Logout
+      </a>
+    } @else {
+      <a routerLink="register/" class="register">Register</a>
+      <a routerLink="login/" class="login btn">Login</a>
+    }
+  </nav>
+</header>
