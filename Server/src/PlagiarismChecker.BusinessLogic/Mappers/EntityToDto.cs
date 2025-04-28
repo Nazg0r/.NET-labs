@@ -19,7 +19,7 @@ namespace BusinessLogic.Mappers
 			new StudentWorkDto
 			{
 				Id = source.Id,
-				FileName = source.FileName,
+				FileName = source.FileName + source.Extension,
 				LoadDate = source.LoadDate,
 				Content = source.Content
 			};
