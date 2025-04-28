@@ -1,0 +1,10 @@
+<i class="fa-solid fa-xmark" (click)="onClose()"></i>
+<div class="content">
+  <p class="content-text">{{ details().content }}</p>
+</div>
+<div
+  class="progress-bar"
+  [class.error-bar]="details().type === 'error'"
+  [style.transition]="'width linear ' + autoCloseDelay + 'ms'"
+  #progressBar
+></div>

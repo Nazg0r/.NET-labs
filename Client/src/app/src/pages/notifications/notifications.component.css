@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  margin: 0 1rem;
+  padding: 1.5rem 1rem;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--primary-color-light);
+  background-color: lightgreen;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  overflow: hidden;
+
+  transition: transform ease 0.2s;
+  transform: translatey(20px);
+}
+
+.fa-xmark {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.3rem;
+  transition: transform ease-in-out 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+}
+
+.progress-bar {
+  position: absolute;
+  width: 100%;
+  height: 0.25rem;
+  bottom: 0;
+  background: green;
+  left: 0;
+}
+
+.finished {
+  width: 0;
+}
+
+.error-bar {
+  background-color: var(--error-color);
+}
