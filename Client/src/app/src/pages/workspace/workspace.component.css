@@ -1,0 +1,83 @@
+:host {
+  width: 100%;
+}
+
+.container {
+  padding: 2rem;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-files {
+  padding: 2rem 0;
+  border-top: 1px solid var(--primary-color);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.file-search {
+  display: flex;
+  border: 2px solid #000;
+  border-radius: 0.5rem;
+  box-shadow: 3px 3px 6px #aaa;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  padding: 0 0.75rem 0 0;
+  font-size: 1.4rem;
+  overflow: hidden;
+}
+
+.file-search-input {
+  min-width: 300px;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2.5rem;
+  padding: 2rem;
+}
+
+.upload-btn-container {
+  position: relative;
+  max-width: 180px;
+  height: 2.5rem;
+}
+
+.upload-btn {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.upload-btn-decorator {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  border: 2px solid var(--primary-color);
+  background-color: var(--primary-color-mega-light);
+  border-radius: 0.5rem;
+  font-size: 18px;
+  box-shadow: 3px 3px 6px #aaa;
+  font-weight: 500;
+}

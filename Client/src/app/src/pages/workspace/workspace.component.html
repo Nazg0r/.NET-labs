@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="tools">
+    <div class="file-search">
+      <input
+        class="file-search-input"
+        type="text"
+        [(ngModel)]="searchReq"
+        placeholder="search..."
+      />
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <div class="upload-btn-container">
+      <input type="file" class="upload-btn" (change)="onFIleSelected($event)" />
+      <button class="upload-btn-decorator">Upload file</button>
+    </div>
+  </div>
+  <div class="user-files">
+    @for (work of filteredWorks(); track work.id) {
+      <app-student-work [workName]="work.fileName" />
+    }
+  </div>
+</div>
