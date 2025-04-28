@@ -1,4 +1,6 @@
-﻿namespace DataAccess.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace DataAccess.Entities
 {
 	public class StudentWork
 	{
@@ -14,6 +16,8 @@
 		public byte[] Content { get; set; } = default!;
 		[Column("student_id")]
 		public string StudentId { get; set; } = default!;
+
+		[JsonIgnore]
 		public Student Student { get; set; } = default!;
 	}
 }
