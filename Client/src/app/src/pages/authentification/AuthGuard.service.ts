@@ -13,7 +13,7 @@ import {
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-  private isAuthenticated = inject(AuthService).getAuthenticationStatus;
+  private isAuthenticated = inject(AuthService).getAuthenticationStatus();
   private router = inject(Router);
 
   canActivate(

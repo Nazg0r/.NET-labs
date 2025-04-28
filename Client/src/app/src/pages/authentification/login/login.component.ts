@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { Login } from '../login.model';
+import { StudentInfoService } from '../../studentInfo.service';
 
 @Component({
   selector: 'app-login',
@@ -19,8 +20,6 @@ import { Login } from '../login.model';
   styleUrls: ['./login.component.css', '../../../../app.component.css'],
 })
 export class LoginComponent implements OnInit {
-  private httpClient = inject(HttpClient);
-  private router = inject(Router);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
 

@@ -15,7 +15,7 @@ export class JWTInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    const tokenInfo = window.localStorage.getItem('token');
+    const tokenInfo = localStorage.getItem('token');
     if (tokenInfo) {
       const token = JSON.parse(tokenInfo).token;
 
