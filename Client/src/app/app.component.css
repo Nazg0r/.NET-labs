@@ -56,3 +56,25 @@ form label {
   border: 2px solid var(--error-color);
   background: var(--error-color-light);
 }
+
+.notifications {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100vh - 1rem);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  justify-content: end;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.show {
+  transform: translateY(0px);
+}
+
+.error {
+  background-color: var(--error-color-light);
+}

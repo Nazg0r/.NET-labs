@@ -1,6 +1,15 @@
 <app-header />
 <app-background />
 <router-outlet />
-<!--<app-welcome/>-->
-<!--<app-registration />-->
-<!--<app-login />-->
+
+<div class="notifications">
+  @for (
+    notification of notificationService.notifications();
+    track notification.id
+  ) {
+    <app-notifications
+      [class.error]="notification.type === 'error'"
+      [details]="notification"
+    ></app-notifications>
+  }
+</div>
