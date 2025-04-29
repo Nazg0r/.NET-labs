@@ -1,0 +1,131 @@
+dialog {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  outline: none;
+  border: none;
+  box-shadow: 2px 4px 8px rgba(255, 255, 255, 0.4);
+  max-width: var(--page-width);
+  width: 100%;
+  max-height: 1000px;
+  height: 100%;
+  overflow: scroll;
+}
+
+dialog[open] {
+  animation: show 1s;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dialog-content {
+  padding: 2rem;
+  border: 2px solid var(--primary-color);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.file-content {
+  height: 100%;
+  max-height: calc(1000px - 2rem);
+  overflow: scroll;
+  flex: 1;
+  border: 1px solid var(--primary-color);
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.about {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.info-block {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.file-info {
+}
+
+.record {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.close-btn-position {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.6rem;
+}
+
+.plagiarism-percent-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.records {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--primary-color);
+}
+
+.lastRecord {
+  border: none;
+}
+
+.hide {
+  display: none !important;
+}
+
+.similar-file {
+  transition: all ease 0.3s;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 932px) {
+  .dialog-content {
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .file-content,
+  .about {
+    flex: auto;
+  }
+}

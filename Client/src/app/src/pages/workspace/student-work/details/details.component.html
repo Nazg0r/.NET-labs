@@ -1,0 +1,65 @@
+<dialog #dialog (click)="onBackdropClick($event)" (close)="close.emit()">
+  <div class="dialog-content">
+    <pre class="file-content">
+      {{ content }}
+    </pre>
+    <div class="about">
+      <div class="file-info info-block">
+        <h2>File info</h2>
+        <div class="record">
+          <div class="key">Filename</div>
+          <div class="value">{{ fileInfo?.fileName }}</div>
+        </div>
+        <div class="record">
+          <div class="key">Author</div>
+          <div class="value">{{ author() }}</div>
+        </div>
+        <div class="record">
+          <div class="key">Load date</div>
+          <div class="value">
+            {{ fileInfo?.loadDate | date: "short" }}
+          </div>
+        </div>
+      </div>
+      <div class="plagiarism-percent-chart">
+        <h2>Plagiarism percent</h2>
+        <canvas
+          id="percentChart"
+          width="200"
+          height="200"
+          [class.hide]="plagiarismStats().length === 0"
+          #chart
+        ></canvas>
+        @if (plagiarismStats().length) {
+          <h3>{{ percentage }}%</h3>
+        } @else {
+          <p>There are no data for this extension file</p>
+        }
+      </div>
+      <div class="similar-files info-block">
+        <h2>Similar files</h2>
+        @if (plagiarismStats().length) {
+          <div class="records">
+            @for (similarFile of plagiarismStats(); track similarFile.id) {
+              <div
+                class="record similar-file"
+                [class.lastRecord]="plagiarismStats().at(-1) === similarFile"
+                (click)="onSimilarFileClick(similarFile.id)"
+              >
+                <div class="key">
+                  <strong>{{ similarFile.name }}</strong>
+                </div>
+                <div class="value">
+                  <strong>{{ similarFile.similarityPercentage }}%</strong>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p>There are no data for this extension file</p>
+        }
+      </div>
+    </div>
+    <button class="close-btn close-btn-position" (click)="onXClick()">⨉</button>
+  </div>
+</dialog>
