@@ -42,5 +42,13 @@ namespace Presentation.Controllers
 
 			return Ok(response);
 		}
+
+		[HttpGet("work/{id}")]
+		public async Task<ActionResult> GetAuthorByWorkId(Guid id)
+		{
+			var response = await studentService.GetAuthorByWorkIdAsync(id);
+
+			return Ok(response);
+		}
 	}
 }
