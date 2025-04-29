@@ -31,10 +31,12 @@
   padding: 0 0.75rem 0 0;
   font-size: 1.4rem;
   overflow: hidden;
+  width: 100%;
+  max-width: 300px;
 }
 
 .file-search-input {
-  min-width: 300px;
+  width: 100%;
   border: none;
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
@@ -80,4 +82,10 @@
   font-size: 18px;
   box-shadow: 3px 3px 6px #aaa;
   font-weight: 500;
+}
+
+@media (max-width: 545px) {
+  .user-files {
+    justify-content: center;
+  }
 }

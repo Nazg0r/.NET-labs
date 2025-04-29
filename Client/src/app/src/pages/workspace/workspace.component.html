@@ -16,7 +16,14 @@
   </div>
   <div class="user-files">
     @for (work of filteredWorks(); track work.id) {
-      <app-student-work [workName]="work.fileName" />
+      <app-student-work
+        [workName]="work.fileName"
+        (click)="onFileDblClick(work)"
+      />
     }
   </div>
 </div>
+
+@if (isModalOpen()) {
+  <app-details [inputFileInfo]="selectedFile()" (close)="onModalClosed()" />
+}

@@ -71,3 +71,16 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
+.close-btn {
+  outline: none;
+  background-color: inherit;
+  border: none;
+  font-size: 2rem;
+  transition: all ease-in 0.25s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+}
