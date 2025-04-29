@@ -1,6 +1,6 @@
 ﻿namespace Shared.Errors
 {
-	public class StudentNotFoundException(string username) : NotFoundException($"Student with username: {username}")
+	public class StudentNotFoundException(string identity) : NotFoundException($"Student with {identity} not found")
 	{
 	}
 }
