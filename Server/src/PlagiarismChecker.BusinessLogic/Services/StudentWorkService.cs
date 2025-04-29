@@ -72,13 +72,14 @@ namespace BusinessLogic.Services
 			var percentages = matchingWorks.Select(w => new PlagiarismResponseDto()
 			{
 				Id = w.Id,
-				Name = w.FileName,
+				Name = w.FileName + w.Extension,
 				SimilarityPercentage = CalculatePercentage(
 					Encoding.UTF8.GetString(selectedWork.Content),
 					Encoding.UTF8.GetString(w.Content)
 					)
 			})
 			.OrderByDescending(p => p.SimilarityPercentage)
+			.Take(5)
 			.ToList();
 
 			return percentages;
