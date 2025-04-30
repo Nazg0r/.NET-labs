@@ -18,6 +18,6 @@ namespace DataAccess.Entities
 		public string StudentId { get; set; } = default!;
 
 		[JsonIgnore]
-		public Student Student { get; set; } = default!;
+		public virtual Student Student { get; set; } = default!;
 	}
 }

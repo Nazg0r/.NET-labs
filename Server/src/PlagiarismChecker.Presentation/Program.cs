@@ -12,7 +12,8 @@ var connectionStringCache = builder.Configuration.GetConnectionString("Cache")!;
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
-	opt.UseNpgsql(connectionStringDb);
+	opt.UseLazyLoadingProxies()
+	.UseNpgsql(connectionStringDb);
 }, ServiceLifetime.Singleton);
 
 builder.Services.AddStackExchangeRedisCache(opt =>

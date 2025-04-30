@@ -11,6 +11,6 @@ namespace DataAccess.Entities
 		[Column("group")]
 		public string Group { get; set; } = default!;
 		[Column("works")]
-		public List<StudentWork>? Works { get; set; } = new();
+		public virtual List<StudentWork>? Works { get; set; } = new();
 	}
 }
