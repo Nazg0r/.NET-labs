@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
 
@@ -36,6 +37,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet("{username}")]
+		[Authorize]
 		public async Task<ActionResult> GetStudentByUsername(string username)
 		{
 			var response = await studentService.GetStudentByUsernameAsync(username);
@@ -44,6 +46,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet("work/{id}")]
+		[Authorize]
 		public async Task<ActionResult> GetAuthorByWorkId(Guid id)
 		{
 			var response = await studentService.GetAuthorByWorkIdAsync(id);

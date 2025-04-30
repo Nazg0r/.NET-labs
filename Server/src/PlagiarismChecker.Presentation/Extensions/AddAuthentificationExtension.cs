@@ -31,11 +31,18 @@ namespace Presentation.Extensions
 			})
 			.AddJwtBearer(options =>
 			{
-				options.TokenValidationParameters = new TokenValidationParameters()
+				options.TokenValidationParameters = new TokenValidationParameters
 				{
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(conf["JWT:Secret"] ?? ""))
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(conf["JWT:Secret"]!)),
+
+					ValidateIssuer = false, 
+					ValidateAudience = false,
+					ValidateLifetime = true,
+
 				};
 			});
+			services.AddAuthorization();
 
 			return services;
 		}

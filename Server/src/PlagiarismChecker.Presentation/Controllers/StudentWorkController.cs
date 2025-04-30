@@ -1,9 +1,11 @@
 ﻿using BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
 
 namespace Presentation.Controllers
 {
+	[Authorize]
 	public class StudentWorkController(IStudentWorkService studentWorkService)
 		: BaseController
 	{

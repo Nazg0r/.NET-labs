@@ -49,6 +49,7 @@ app.UseCors("AllowFront");
 app.MapControllers();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseExceptionHandler(opt => { });
 
