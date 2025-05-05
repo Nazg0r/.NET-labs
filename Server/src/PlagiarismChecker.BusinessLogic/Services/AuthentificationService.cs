@@ -35,7 +35,7 @@ namespace BusinessLogic.Services
 		{
 			Student? student = await userManager.FindByNameAsync(credentials.Username);
 
-			if (student is null) throw new StudentNotFoundException(credentials.Username);
+			if (student is null) throw new StudentNotFoundException($"username: {credentials.Username}");
 
 			var result = await signInManager.CheckPasswordSignInAsync(
 				student,
