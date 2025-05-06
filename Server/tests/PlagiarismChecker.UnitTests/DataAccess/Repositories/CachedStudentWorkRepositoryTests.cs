@@ -4,7 +4,6 @@ using DataAccess.Interfaces;
 using DataAccess.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
 using Moq;
-using TestTools;
 
 namespace PlagiarismChecker.DataAccess.Repositories
 {
