@@ -13,7 +13,7 @@ namespace Presentation.Validators
 
 			RuleFor(x => x.Password)
 				.NotEmpty()
-				.WithMessage("Password is requiered")
+				.WithMessage("Password is required")
 				.MinimumLength(8)
 				.WithMessage("Password must be at least 8 character long");
 		}

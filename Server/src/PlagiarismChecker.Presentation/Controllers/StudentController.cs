@@ -47,9 +47,9 @@ namespace Presentation.Controllers
 
 		[HttpGet("work/{id}")]
 		[Authorize]
-		public async Task<ActionResult> GetAuthorByWorkId(Guid id)
+		public ActionResult GetAuthorByWorkId(Guid id)
 		{
-			var response = await studentService.GetAuthorByWorkIdAsync(id);
+			var response = studentService.GetAuthorByWorkId(id);
 
 			return Ok(response);
 		}

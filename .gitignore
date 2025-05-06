@@ -486,3 +486,4 @@ $RECYCLE.BIN/
 *.swp
 /Server/src/PlagiarismChecker.Presentation/appsettings.Development.json
 /Server/src/PlagiarismChecker.Presentation/appsettings.Development.json
+/Server/tests/PlagiarismChecker.UnitTests/coveragereport/*

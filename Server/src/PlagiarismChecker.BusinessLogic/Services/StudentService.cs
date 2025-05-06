@@ -4,7 +4,6 @@ using BusinessLogic.Mappers;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Shared.DTOs;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services
 {
@@ -14,15 +13,15 @@ namespace BusinessLogic.Services
 		public async Task<StudentResponseDto> GetStudentByUsernameAsync(string username)
 		{
 			var student = await userManager.FindByNameAsync(username);
-			if (student == null)  throw new StudentNotFoundException($"username: { username }");
+			if (student is null)  throw new StudentNotFoundException($"username: { username }");
 
 			return student.ToDto();
 		}
 
-		public async Task<string> GetAuthorByWorkIdAsync(Guid id)
+		public string GetAuthorByWorkId(Guid id)
 		{
-			var student = await userManager.Users.FirstOrDefaultAsync(u => u.Works!.Any(w => w.Id == id));
-			if (student == null) throw new StudentNotFoundException($"username: {id}");
+			var student = userManager.Users.FirstOrDefault(u => u.Works!.Any(w => w.Id == id));
+			if (student is null) throw new StudentWorkNotFoundException(id);
 
 			return $"{student.Name} {student.Surname} {student.Group}";
 		}

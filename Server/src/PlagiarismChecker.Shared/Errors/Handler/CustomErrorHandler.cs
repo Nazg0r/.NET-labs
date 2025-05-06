@@ -1,10 +1,12 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Shared.Errors.Handler
 {
+    [ExcludeFromCodeCoverage]
 	public class CustomErrorHandler : IExceptionHandler
 	{
 		public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)

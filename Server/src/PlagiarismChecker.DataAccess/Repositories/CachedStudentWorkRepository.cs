@@ -24,7 +24,7 @@ namespace DataAccess.Repositories
 			var work = await repository.GetWorkByIdAsync(id);
 			await cache.SetStringAsync(id.ToString(), JsonSerializer.Serialize(work));
 
-			return await repository.GetWorkByIdAsync(id);
+			return work;
 		}
 
 		public async Task<StudentWork> AddNewWorkAsync(StudentWork work)
