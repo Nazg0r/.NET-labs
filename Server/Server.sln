@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\PlagiarismChecker.UnitTests\UnitTests.csproj", "{D1476643-3348-4A84-8D0A-FCD432A8F953}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTools", "tests\PlagiarismChecker.TestTools\TestTools.csproj", "{1C094160-3274-4390-B07F-D2638C40AEDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{D1476643-3348-4A84-8D0A-FCD432A8F953}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1476643-3348-4A84-8D0A-FCD432A8F953}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1476643-3348-4A84-8D0A-FCD432A8F953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C094160-3274-4390-B07F-D2638C40AEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C094160-3274-4390-B07F-D2638C40AEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C094160-3274-4390-B07F-D2638C40AEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C094160-3274-4390-B07F-D2638C40AEDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +79,6 @@ Global
 		{74489DB5-33E8-41F1-92F9-0B3FFAD06E63} = {EA6E7E48-D7F9-44CE-BCF1-35225CDEF124}
 		{8A03B2F0-AA30-40D3-86C1-F5AC07364ABB} = {EA6E7E48-D7F9-44CE-BCF1-35225CDEF124}
 		{D1476643-3348-4A84-8D0A-FCD432A8F953} = {EA6E7E48-D7F9-44CE-BCF1-35225CDEF124}
+		{1C094160-3274-4390-B07F-D2638C40AEDE} = {EA6E7E48-D7F9-44CE-BCF1-35225CDEF124}
 	EndGlobalSection
 EndGlobal
