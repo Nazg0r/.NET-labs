@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using Shared.DTOs;
 using Shared.Errors;
-using TestTools;
 
 namespace PlagiarismChecker.BussinesLogic.Services
 {

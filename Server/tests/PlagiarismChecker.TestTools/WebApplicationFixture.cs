@@ -1,16 +1,21 @@
 ﻿using DataAccess.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Testcontainers.PostgreSql;
 using Testcontainers.Redis;
+using Xunit;
 
-namespace PlagiarismChecker.Controllers
+namespace PlagiarismChecker
 {
-	public class StudentControllerFixture : WebApplicationFactory<Program>, IAsyncLifetime
+	public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 	{
 		private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
 			.WithImage("postgres")
@@ -47,6 +52,13 @@ namespace PlagiarismChecker.Controllers
 				{
 					opt.Configuration = _redisCache.GetConnectionString();
 				});
+
+				services.RemoveAll(typeof(IConfigureOptions<AuthenticationOptions>));
+				services.RemoveAll(typeof(IConfigureOptions<JwtBearerOptions>));
+
+				services.AddAuthentication("Test")
+					.AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+						"Test", options => { });
 			});
 		}
 
