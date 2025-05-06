@@ -25,7 +25,7 @@ namespace Presentation.Validators
 				.NotEmpty()
 				.WithMessage("Group is required")
 				.Length(5,6)
-				.WithMessage("Incorect group format");
+				.WithMessage("Incorrect group format");
 
 			RuleFor(x => x.Password)
 				.NotEmpty()
