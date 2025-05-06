@@ -100,6 +100,90 @@ namespace TestTools
 			}
 		];
 
+		public static readonly List<StudentWork> WorksWithSameExtension =
+		[
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("home work"),
+				FileName = "original",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
 
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("my home work"),
+				FileName = "copy",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("task"),
+				FileName = "irrelevant",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("home task"),
+				FileName = "extra",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			}
+		];
+
+		public static readonly List<StudentWork> WorksWithDifferentExtension =
+		[
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("home work"),
+				FileName = "original",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("my home work"),
+				FileName = "copy",
+				Extension = ".txt",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("task"),
+				FileName = "irrelevant",
+				Extension = ".cs",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new StudentWork
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("home task"),
+				FileName = "extra",
+				Extension = ".c",
+				LoadDate = DateTime.Now,
+				StudentId = Guid.NewGuid().ToString()
+			}
+		];
 	}
 }

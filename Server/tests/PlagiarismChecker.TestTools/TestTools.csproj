@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PlagiarismChecker.DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\Server\src\PlagiarismChecker.DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
