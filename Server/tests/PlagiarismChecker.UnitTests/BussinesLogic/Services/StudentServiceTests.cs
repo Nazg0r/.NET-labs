@@ -4,31 +4,30 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using Shared.DTOs;
 using Shared.Errors;
-using System.Text;
+using TestTools;
 
 namespace PlagiarismChecker.BussinesLogic.Services
 {
 	public class StudentServiceTests
 	{
-		Student TestStudent = new Student
+		private readonly Mock<UserManager<Student>> _userManagerMock;
+
+		public StudentServiceTests()
 		{
-			Id = Guid.NewGuid().ToString(),
-			UserName = "johnDoe",
-			Name = "John",
-			Surname = "Doe",
-			Group = "IM-01",
-			Works = new List<StudentWork>
-			{
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("hello world"),
-					FileName = "test.txt",
-					LoadDate = DateTime.UtcNow,
-					Extension = ".txt"
-				}
-			}
-		};
+			var userStoreMock = new Mock<IUserStore<Student>>();
+			_userManagerMock = new Mock<UserManager<Student>>
+			(
+				userStoreMock.Object,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			);
+		}
 
 		public class GetStudentByUsernameAsync : StudentServiceTests
 		{
@@ -36,14 +35,13 @@ namespace PlagiarismChecker.BussinesLogic.Services
 			public async Task Should_ReturnStudentResponseDto_WhenUserExist()
 			{
 				// Arrange
-				var username = TestStudent.UserName;
-				var student = TestStudent;
+				var student = SharedTestsData.TestStudents.First();
+				var username = student.UserName;
 
-				var mockUserManager = GetUserManagerMock();
-				mockUserManager.Setup(x => x.FindByNameAsync(username))
+				_userManagerMock.Setup(x => x.FindByNameAsync(username))
 					.ReturnsAsync(student);
 
-				var studentService = new StudentService(mockUserManager.Object);
+				var studentService = new StudentService(_userManagerMock.Object);
 
 				// Act
 				var result = await studentService.GetStudentByUsernameAsync(username);
@@ -57,23 +55,23 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				Assert.Equal(student.Surname, result.Surname);
 				Assert.Equal(student.Group, result.Group);
 				Assert.Equal(student.Works!.First().Id, result.Works!.First().Id);
-				mockUserManager.Verify(m => m.FindByNameAsync(username), Times.Once);
+				_userManagerMock.Verify(m => m.FindByNameAsync(username), Times.Once);
 			}
 
 			[Fact]
 			public async Task Should_ThrowStudentNotFoundException_WhenUserNotExist()
 			{
 				// Arrange
-				var username = TestStudent.UserName!;
-				var mockUserManager = GetUserManagerMock();
+				var username = SharedTestsData.TestStudents.First().UserName!;
 
-				mockUserManager.Setup(x => x.FindByNameAsync(username))
+				_userManagerMock.Setup(x => x.FindByNameAsync(username))
 					.ReturnsAsync((Student)null!);
-				var studentService = new StudentService(mockUserManager.Object);
+				var studentService = new StudentService(_userManagerMock.Object);
 
 				// Act & Assert
-				await Assert.ThrowsAsync<StudentNotFoundException>(() => studentService.GetStudentByUsernameAsync(username));
-				mockUserManager.Verify(m => m.FindByNameAsync(username), Times.Once);
+				await Assert.ThrowsAsync<StudentNotFoundException>(() =>
+					studentService.GetStudentByUsernameAsync(username));
+				_userManagerMock.Verify(m => m.FindByNameAsync(username), Times.Once);
 			}
 		}
 
@@ -83,13 +81,12 @@ namespace PlagiarismChecker.BussinesLogic.Services
 			public void Should_ReturnAuthor_WhenUserExist()
 			{
 				// Arrange
-				var workId = TestStudent.Works!.First().Id;
-				var student = TestStudent;
-				var mockUserManager = GetUserManagerMock();
+				var student = SharedTestsData.TestStudents.First();
+				var workId = student.Works!.First().Id;
 
-				mockUserManager.Setup(x => x.Users)
+				_userManagerMock.Setup(x => x.Users)
 					.Returns(new List<Student> { student }.AsQueryable());
-				var studentService = new StudentService(mockUserManager.Object);
+				var studentService = new StudentService(_userManagerMock.Object);
 
 				// Act
 				var result = studentService.GetAuthorByWorkId(workId);
@@ -105,33 +102,14 @@ namespace PlagiarismChecker.BussinesLogic.Services
 			{
 				// Arrange
 				var workId = Guid.NewGuid();
-				var mockUserManager = GetUserManagerMock();
 
-				mockUserManager.Setup(x => x.Users)
+				_userManagerMock.Setup(x => x.Users)
 					.Returns(new List<Student>().AsQueryable());
-				var studentService = new StudentService(mockUserManager.Object);
+				var studentService = new StudentService(_userManagerMock.Object);
 
 				// Act & Assert
-				Assert.Throws<StudentNotFoundException>(() => studentService.GetAuthorByWorkId(workId));
+				Assert.Throws<StudentWorkNotFoundException>(() => studentService.GetAuthorByWorkId(workId));
 			}
-		}
-
-		private Mock<UserManager<Student>> GetUserManagerMock()
-		{
-			var userStoreMock = new Mock<IUserStore<Student>>();
-			var userManagerMock = new Mock<UserManager<Student>>
-				(
-					userStoreMock.Object,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null
-				);
-			return userManagerMock;
 		}
 	}
 }

@@ -10,10 +10,11 @@ namespace PlagiarismChecker.BussinesLogic.Services
 {
 	public class AuthentificationServiceTests
 	{
-		private Mock<UserManager<Student>> _mockUserManager;
-		private Mock<SignInManager<Student>> _mockSignInManager;
-		private Mock<IConfiguration> _mockConfiguration;
-		private AuthentificationService _service;
+		private readonly Mock<UserManager<Student>> _mockUserManager;
+		private readonly Mock<SignInManager<Student>> _mockSignInManager;
+		private readonly Mock<IConfiguration> _mockConfiguration;
+		private readonly AuthentificationService _service;
+
 		AuthentificationServiceTests()
 		{
 			_mockUserManager = GetUserManagerMock();
@@ -45,7 +46,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				};
 
 				_mockUserManager.Setup
-					(x => x.CreateAsync(It.IsAny<Student>(), password))
+						(x => x.CreateAsync(It.IsAny<Student>(), password))
 					.ReturnsAsync(IdentityResult.Success);
 
 				// Act
@@ -70,7 +71,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				};
 
 				_mockUserManager.Setup
-					(x => x.CreateAsync(It.IsAny<Student>(), password))
+						(x => x.CreateAsync(It.IsAny<Student>(), password))
 					.ReturnsAsync(IdentityResult.Failed());
 
 				// Act & Assert
@@ -158,7 +159,6 @@ namespace PlagiarismChecker.BussinesLogic.Services
 
 				// Act & Assert
 				await Assert.ThrowsAsync<UnauthorizedException>(() => _service.LoginAsync(credentials));
-
 			}
 		}
 
@@ -166,17 +166,17 @@ namespace PlagiarismChecker.BussinesLogic.Services
 		{
 			var userStoreMock = new Mock<IUserStore<Student>>();
 			var userManagerMock = new Mock<UserManager<Student>>
-				(
-					userStoreMock.Object,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null
-				);
+			(
+				userStoreMock.Object,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			);
 			return userManagerMock;
 		}
 

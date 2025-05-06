@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using Shared.DTOs;
 using Shared.Errors;
-using System.Linq;
 using System.Text;
+using TestTools;
 
 namespace PlagiarismChecker.BussinesLogic.Services
 {
@@ -21,6 +21,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 			LoadDate = DateTime.Now,
 			StudentId = Guid.NewGuid().ToString()
 		};
+
 		public class GetWorkAsync : StudentWorkServiceTests
 		{
 			[Fact]
@@ -55,10 +56,12 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
 
 				//Act & Assert
-				await Assert.ThrowsAsync<StudentWorkNotFoundException>( async () => await studentWorkService.GetWorkAsync(workId));
+				await Assert.ThrowsAsync<StudentWorkNotFoundException>(async () =>
+					await studentWorkService.GetWorkAsync(workId));
 				mockRepo.Verify(r => r.GetWorkByIdAsync(workId), Times.Once);
 			}
 		}
+
 		public class GetWorksAsync : StudentWorkServiceTests
 		{
 			[Fact]
@@ -81,6 +84,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				Assert.Equal("homework.cs", result.First().FileName);
 				mockRepo.Verify(r => r.GetAllWorksAsync(), Times.Once);
 			}
+
 			[Fact]
 			public async Task Should_ThrowStudentWorksNotFoundException_WhenWorksAreNotExist()
 			{
@@ -90,7 +94,8 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
 
 				// Act & Assert
-				await Assert.ThrowsAsync<StudentWorksNotFoundException>(async () => await studentWorkService.GetWorksAsync());
+				await Assert.ThrowsAsync<StudentWorksNotFoundException>(async () =>
+					await studentWorkService.GetWorksAsync());
 				mockRepo.Verify(r => r.GetAllWorksAsync(), Times.Once);
 			}
 		}
@@ -98,7 +103,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 		public class StoreWorkAsync : StudentWorkServiceTests
 		{
 			[Fact]
-			public async Task Should_ReturnStudentWorkResponseDto_WhenWorkSuccessfulyStoredAsync()
+			public async Task Should_ReturnStudentWorkResponseDto_WhenWorkSuccessfullyStoredAsync()
 			{
 				// Arrange
 				var filename = "homework.cs";
@@ -108,10 +113,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 
 				var mockFile = new Mock<IFormFile>();
 				mockFile.Setup(f => f.FileName).Returns(filename);
-				mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(s =>
-				{
-					stream.CopyTo(s);
-				});
+				mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(s => { stream.CopyTo(s); });
 
 				var mockRepo = new Mock<IStudentWorkRepository>();
 				mockRepo.Setup(r => r.AddNewWorkAsync(It.IsAny<StudentWork>()));
@@ -142,7 +144,8 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
 
 				// Act & Assert
-				await Assert.ThrowsAsync<ArgumentException>(async () => await studentWorkService.StoreWorkAsync(file!, studentId));
+				await Assert.ThrowsAsync<ArgumentException>(async () =>
+					await studentWorkService.StoreWorkAsync(file!, studentId));
 				mockRepo.Verify(r => r.AddNewWorkAsync(It.IsAny<StudentWork>()), Times.Never);
 			}
 		}
@@ -168,52 +171,12 @@ namespace PlagiarismChecker.BussinesLogic.Services
 
 		public class GetPercentagesAsync : StudentWorkServiceTests
 		{
-			private List<StudentWork> WithSameExtention = new()
-			{
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("home work"),
-					FileName = "original",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("my home work"),
-					FileName = "copy",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("task"),
-					FileName = "irrelevant",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("home task"),
-					FileName = "extra",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				}
-			};
-
 			[Fact]
 			public async Task Should_ReturnListOfThreePlagiarismResponseDto_WhenFourWorksStored_WithTheSameExtension()
 			{
 				// Arrange
-				var selectedWork = WithSameExtention.First();
-				var works = new List<StudentWork>(WithSameExtention);
+				var selectedWork = SharedTestsData.WorksWithSameExtension.First();
+				var works = new List<StudentWork>(SharedTestsData.WorksWithSameExtension);
 				var mockRepo = new Mock<IStudentWorkRepository>();
 				mockRepo.Setup(r => r.GetAllWorksAsync()).ReturnsAsync(works);
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
@@ -226,57 +189,17 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				Assert.IsType<List<PlagiarismResponseDto>>(result);
 				Assert.Equal(3, result.Count);
 				Assert.True(result[0].SimilarityPercentage >= result[1].SimilarityPercentage);
-				Assert.Equal(WithSameExtention[1].Id, result.First().Id);
-				Assert.Equal(WithSameExtention[2].Id, result.Last().Id);
+				Assert.Equal(SharedTestsData.WorksWithSameExtension[1].Id, result.First().Id);
+				Assert.Equal(SharedTestsData.WorksWithSameExtension[2].Id, result.Last().Id);
 				Assert.DoesNotContain(result, r => r.Id == selectedWork.Id);
 			}
-
-			private List<StudentWork> WithDifferentExtention = new()
-			{
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("home work"),
-					FileName = "original",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("my home work"),
-					FileName = "copy",
-					Extension = ".txt",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("task"),
-					FileName = "irrelevant",
-					Extension = ".cs",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				},
-				new StudentWork
-				{
-					Id = Guid.NewGuid(),
-					Content = Encoding.UTF8.GetBytes("home task"),
-					FileName = "extra",
-					Extension = ".c",
-					LoadDate = DateTime.Now,
-					StudentId = Guid.NewGuid().ToString()
-				}
-			};
 
 			[Fact]
 			public async Task Should_ReturnListOfOnePlagiarismResponseDto_WhenFourWorksStored_WithDifferentExtension()
 			{
 				// Arrange
-				var selectedWork = WithDifferentExtention.First();
-				var works = new List<StudentWork>(WithDifferentExtention);
+				var selectedWork = SharedTestsData.WorksWithDifferentExtension.First();
+				var works = new List<StudentWork>(SharedTestsData.WorksWithDifferentExtension);
 				var mockRepo = new Mock<IStudentWorkRepository>();
 				mockRepo.Setup(r => r.GetAllWorksAsync()).ReturnsAsync(works);
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
@@ -288,7 +211,7 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				Assert.NotNull(result);
 				Assert.IsType<List<PlagiarismResponseDto>>(result);
 				Assert.Single(result);
-				Assert.Equal(WithDifferentExtention[2].Id, result.First().Id);
+				Assert.Equal(SharedTestsData.WorksWithDifferentExtension[2].Id, result.First().Id);
 				Assert.Collection(result, r => r.Name.Contains(selectedWork.Extension));
 				Assert.DoesNotContain(result, r => r.Id == selectedWork.Id);
 			}
@@ -303,10 +226,10 @@ namespace PlagiarismChecker.BussinesLogic.Services
 				var studentWorkService = new StudentWorkService(mockRepo.Object);
 
 				// Act & Assert
-				await Assert.ThrowsAsync<StudentWorkNotFoundException>(async () => await studentWorkService.GetPercentagesAsync(workId));
+				await Assert.ThrowsAsync<StudentWorkNotFoundException>(async () =>
+					await studentWorkService.GetPercentagesAsync(workId));
 				mockRepo.Verify(r => r.GetAllWorksAsync(), Times.Once);
 			}
-
 		}
 	}
 }
