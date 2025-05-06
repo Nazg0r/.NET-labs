@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Mappers;
-using DataAccess.Entities;
 using Shared.DTOs;
-using System.Text;
+using TestTools;
 
 namespace PlagiarismChecker.BussinesLogic.Mappers
 {
@@ -13,9 +12,11 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 			public void Should_ReturnStudentWorkResponseDto_WhenCalledFromStudentWork()
 			{
 				// Arrange
-				var studentWork = CreateTestStudentWork();
+				var studentWork = SharedTestsData.WorksWithSameExtension[0];
+
 				// Act
 				var result = studentWork.ToDto();
+
 				// Assert
 				Assert.NotNull(result);
 				Assert.IsType<StudentWorkResponseDto>(result);
@@ -30,20 +31,11 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 			public void Should_ReturnStudentResponseDto_WhenCalledFromStudent()
 			{
 				// Arrange
-				var student = new Student
-				{
-					Id = Guid.NewGuid().ToString(),
-					Name = "Devid",
-					Surname = "Johnson",
-					Group = "IM-00",
-					Works = new List<StudentWork>
-					{
-						CreateTestStudentWork()
-					}
+				var student = SharedTestsData.TestStudents[0];
 
-				};
 				// Act
 				var result = student.ToDto();
+
 				// Assert
 				Assert.NotNull(result);
 				Assert.IsType<StudentResponseDto>(result);
@@ -52,7 +44,7 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 				Assert.Equal(student.Surname, result.Surname);
 				Assert.Equal(student.Group, result.Group);
 				Assert.NotNull(result.Works);
-				Assert.Single(result.Works);
+				Assert.Equal(student.Works!.Count(), result.Works.Count());
 				Assert.IsType<StudentWorkDto>(result.Works.First());
 			}
 		}
@@ -63,9 +55,11 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 			public void Should_ReturnStudentWorkDto_WhenCalledFromStudentWork()
 			{
 				// Arrange
-				var studentWork = CreateTestStudentWork();
+				var studentWork = SharedTestsData.WorksWithSameExtension[1];
+
 				// Act
 				var result = studentWork.ToStudentWorkDto();
+
 				// Assert
 				Assert.NotNull(result);
 				Assert.IsType<StudentWorkDto>(result);
@@ -74,19 +68,6 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 				Assert.Equal(studentWork.FileName + studentWork.Extension, result.FileName);
 				Assert.Equal(studentWork.LoadDate, result.LoadDate);
 			}
-		}
-
-		private StudentWork CreateTestStudentWork()
-		{
-			return new StudentWork
-			{
-				Id = Guid.NewGuid(),
-				Content = Encoding.UTF8.GetBytes("hello world"),
-				FileName = "homework",
-				LoadDate = DateTime.Now,
-				Extension = ".cs",
-				StudentId = Guid.NewGuid().ToString()
-			};
 		}
 	}
 }

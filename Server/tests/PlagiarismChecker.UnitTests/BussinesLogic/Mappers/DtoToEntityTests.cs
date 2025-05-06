@@ -9,16 +9,17 @@ namespace PlagiarismChecker.BussinesLogic.Mappers
 		public class ToEntity : DtoToEntityTests
 		{
 			[Fact]
-			public void Should_ReturnStudet_WhenCalledFromRegistrationRequestDto()
+			public void Should_ReturnStudent_WhenCalledFromRegistrationRequestDto()
 			{
 				// Arrange
 				var dto = new RegistrationRequestDto
 				{
-					Username = "testuser",
+					Username = "testUser",
 					Name = "Test",
 					Surname = "User",
 					Group = "TestGroup"
 				};
+
 				// Act
 				var result = dto.ToEntity();
 
