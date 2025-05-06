@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using DataAccess.Entities;
 
-namespace TestTools
+namespace PlagiarismChecker
 {
 	public static class SharedTestsData
 	{
