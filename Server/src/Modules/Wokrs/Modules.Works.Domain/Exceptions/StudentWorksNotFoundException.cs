@@ -1,5 +1,5 @@
 ﻿namespace Modules.Works.Domain.Exceptions
 {
-	internal class StudentWorksNotFoundException()
+	public class StudentWorksNotFoundException()
 		: NotFoundException($"`student works`");
 }
