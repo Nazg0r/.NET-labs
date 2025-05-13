@@ -1,9 +1,9 @@
 services:
   postgresDb:
-    image: postgres
+    image: postgres:latest
     
   distributedCache:
-    image: redis
+    image: redis:latest
 
 volumes:
     postgres: 
