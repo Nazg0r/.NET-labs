@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
-
-namespace Modules.Students.Domain.Entities
+﻿namespace Modules.Students.Domain.Entities
 {
-	internal class Student : IdentityUser
+	public class Student
 	{
-		[Column("name")] public string Name { get; set; } = default!;
-		[Column("surname")] public string Surname { get; set; } = default!;
-		[Column("group")] public string Group { get; set; } = default!;
+		public Guid Id { get; set; }
+		public string Name { get; set; } = null!;
+		public string Surname { get; set; } = null!;
+		public string Group { get; set; } = null!;
+		public string Username { get; set; } = null!;
+		public List<Guid> WorksIds { get; set; } = [];
 	}
 }

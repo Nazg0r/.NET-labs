@@ -1,5 +1,5 @@
 ﻿namespace Modules.Students.Domain.Exceptions
 {
-	internal class StudentCreationException()
+	public class StudentCreationException()
 		: CreationException("student");
 }
