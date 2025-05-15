@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Modules.Students.Application.Contracts;
 using Modules.Students.Infrastructure.Authentification;
+using Modules.Students.Infrastructure.Command;
 using Modules.Students.Infrastructure.Query;
 
 namespace Modules.Students.Infrastructure
@@ -19,6 +20,7 @@ namespace Modules.Students.Infrastructure
 			builder.Services.AddScoped<IStudentAuthenticator, IdentityStudentAuthenticator>();
 			builder.Services.AddScoped<IStudentCreator, StudentCreator>();
 			builder.Services.AddScoped<IStudentQueries, StudentQueries>();
+			builder.Services.AddScoped<IStudentCommands, StudentCommands>();
 
 			builder.Services.AddAuthentication(options =>
 				{
