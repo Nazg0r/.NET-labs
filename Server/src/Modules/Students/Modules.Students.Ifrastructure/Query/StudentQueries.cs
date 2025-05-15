@@ -9,7 +9,7 @@ namespace Modules.Students.Infrastructure.Query
 {
 	public class StudentQueries(UserManager<StudentIdentity> userManager) : IStudentQueries
 	{
-		public async Task<Student> GetStudentByUsername(string username)
+		public async Task<Student> GetStudentByUsernameAsync(string username)
 		{
 			var student = await userManager.FindByNameAsync(username);
 			if (student is null) throw new StudentNotFoundException($"username: {username}");
@@ -19,6 +19,12 @@ namespace Modules.Students.Infrastructure.Query
 		public Student GetStudentByWorkId(Guid id)
 		{
 			var student = userManager.Users.FirstOrDefault(u => u.WorksIds.Contains(id));
+			if (student is null) throw new StudentNotFoundException($"workId: {id}");
+			return student.ToDomain();
+		}
+		public async Task<Student> GetStudentByIdAsync(string id)
+		{
+			var student = await userManager.FindByIdAsync(id);
 			if (student is null) throw new StudentNotFoundException($"id: {id}");
 			return student.ToDomain();
 		}
