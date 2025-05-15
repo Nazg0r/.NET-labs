@@ -1,7 +1,8 @@
 using API.Endpoints;
 using API.Extensions;
 using API.Infrastructure;
-using Microsoft.AspNetCore.Builder;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Modules.Students.Application;
 using Modules.Students.Infrastructure;
 using Modules.Students.Persistence;
@@ -20,10 +21,12 @@ builder.AddWorksModuleApplication();
 builder.AddWorksModulePersistence();
 
 builder.Services.AddConfiguredMassTransit();
-
 builder.Services.AddConfiguredCors(config);
 
 builder.Services.AddExceptionHandler<ErrorHandler>();
+builder.Services.AddHealthChecks()
+	.AddNpgSql(config.GetConnectionString("Database")!)
+	.AddRedis(config.GetConnectionString("Cache")!);
 
 var app = builder.Build();
 
@@ -36,5 +39,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseExceptionHandler(opt => { });
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
