@@ -5,5 +5,9 @@ services:
   distributedCache:
     image: redis:latest
 
+  rebbitmq:
+     image: rabbitmq:3-management
+
+
 volumes:
     postgres: 
