@@ -13,6 +13,9 @@ namespace Modules.Works.Persistence.Repositories
 		public async Task<List<Work>> GetAllWorksAsync() =>
 			await context.Works.ToListAsync();
 
+		public async Task<List<Work>> GetWorksByStudentIdAsync(string id) =>
+			await context.Works.Where(w => w.StudentId == id).ToListAsync();
+
 		public async Task<Work> AddNewWorkAsync(Work work)
 		{
 			await context.Works.AddAsync(work);

@@ -13,6 +13,11 @@ namespace Modules.Works.Persistence.Repositories
 			return await repository.GetAllWorksAsync();
 		}
 
+		public async Task<List<Work>> GetWorksByStudentIdAsync(string id)
+		{
+			return await repository.GetWorksByStudentIdAsync(id);
+		}
+
 		public async Task<Work?> GetWorkByIdAsync(Guid id)
 		{
 			var cachedWork = await cache.GetStringAsync(id.ToString());
