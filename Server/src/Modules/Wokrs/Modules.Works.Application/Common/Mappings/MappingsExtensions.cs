@@ -1,4 +1,4 @@
-﻿using Modules.Works.Application.Common.Models;
+﻿using Modules.Works.IntegrationEvents;
 
 namespace Modules.Works.Application.Common.Mappings
 {
@@ -12,6 +12,15 @@ namespace Modules.Works.Application.Common.Mappings
 				FileName = source.FileName + source.Extension,
 				LoadDate = source.LoadDate,
 				StudentId = source.StudentId
+			};
+
+		public static StudentWorkDto ToEventResponse(this Work source) =>
+			new StudentWorkDto
+			{
+				Id = source.Id,
+				FileName = source.FileName + source.Extension,
+				LoadDate = source.LoadDate,
+				Content = source.Content
 			};
 	}
 }

@@ -5,7 +5,7 @@ using Modules.Works.IntegrationEvents;
 
 namespace Modules.Works.Application.UseCases
 {
-	public class GetStudentWorkRequestConsumer(IWorkRepository repository)
+	public class GetStudentWorksRequestConsumer(IWorkRepository repository)
 		: IConsumer<GetStudentWorksRequest>
 	{
 		public async Task Consume(ConsumeContext<GetStudentWorksRequest> context)
