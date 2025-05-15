@@ -1,5 +1,6 @@
 using API.Endpoints;
 using API.Extensions;
+using API.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Modules.Students.Application;
 using Modules.Students.Infrastructure;
@@ -22,6 +23,8 @@ builder.Services.AddConfiguredMassTransit();
 
 builder.Services.AddConfiguredCors(config);
 
+builder.Services.AddExceptionHandler<ErrorHandler>();
+
 var app = builder.Build();
 
 app.UseCors(config["CorsPolicy:Name"] ?? string.Empty);
@@ -31,5 +34,7 @@ app.MapWorkEndpoints();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseExceptionHandler(opt => { });
 
 app.Run();
