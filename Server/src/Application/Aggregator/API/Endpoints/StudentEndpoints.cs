@@ -68,9 +68,9 @@ namespace API.Endpoints
 				})
 				.Produces(StatusCodes.Status200OK)
 				.ProducesProblem(StatusCodes.Status400BadRequest)
-				.WithDescription("Endpoint for getting student by work id")
+				.WithDescription("Endpoint for getting student by work workId")
 				.WithName("GetByWorkId")
-				.WithSummary("get student by work id");
+				.WithSummary("get student by work workId");
 
 			return endpoints;
 		}

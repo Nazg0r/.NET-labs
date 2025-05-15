@@ -22,9 +22,9 @@ namespace API.Endpoints
 				})
 				.Produces(StatusCodes.Status200OK)
 				.ProducesProblem(StatusCodes.Status404NotFound)
-				.WithDescription("Endpoint for getting work by id")
+				.WithDescription("Endpoint for getting work by workId")
 				.WithName("GetWorkById")
-				.WithSummary("get work by id");
+				.WithSummary("get work by workId");
 
 			endpoints.MapGet("/api/studentwork", async (
 					[FromServices] GetAllWorksHandler handler,
