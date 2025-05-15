@@ -1,8 +1,10 @@
-﻿using Modules.Works.Application.Common.Mappings;
+﻿using MassTransit;
+using Modules.Works.Application.Common.Mappings;
+using Modules.Works.IntegrationEvents;
 
 namespace Modules.Works.Application.UseCases.UploadWork
 {
-	public class UploadWorkHandler(IWorkRepository repository) : ICommandHandler<UploadWorkCommand, ProcessedWorkResponse>
+	public class UploadWorkHandler(IWorkRepository repository, IBus bus) : ICommandHandler<UploadWorkCommand, ProcessedWorkResponse>
 	{
 		public async Task<ProcessedWorkResponse> HandleAsync(UploadWorkCommand command,
 			CancellationToken cancellationToken)
@@ -25,6 +27,8 @@ namespace Modules.Works.Application.UseCases.UploadWork
 			};
 
 			await repository.AddNewWorkAsync(workEntity);
+
+			await bus.Publish(new WorkUploadedEvent(workEntity.Id, workEntity.StudentId), CancellationToken.None);
 
 			return workEntity.ToDto();
 		}
