@@ -2,7 +2,8 @@
 {
 	public interface IStudentQueries
 	{
-		public Task<Student> GetStudentByUsername(string username);
+		public Task<Student> GetStudentByUsernameAsync(string username);
 		public Student GetStudentByWorkId(Guid id);
+		public Task<Student> GetStudentByIdAsync(string id);
 	}
 }
