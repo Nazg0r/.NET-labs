@@ -20,7 +20,11 @@ builder.AddWorksModulePersistence();
 
 builder.Services.AddConfiguredMassTransit();
 
+builder.Services.AddConfiguredCors(config);
+
 var app = builder.Build();
+
+app.UseCors(config["CorsPolicy:Name"] ?? string.Empty);
 
 app.MapStudentEndpoints();
 app.MapWorkEndpoints();
