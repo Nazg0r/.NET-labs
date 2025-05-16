@@ -16,8 +16,6 @@ namespace Modules.Students.Infrastructure.Command
 
 			var result = await userManager.UpdateAsync(student);
 			if (!result.Succeeded) throw new StudentUpdatingException($"id: {studentId}");
-
-			await userManager.UpdateAsync(student);
 		}
 	}
 }

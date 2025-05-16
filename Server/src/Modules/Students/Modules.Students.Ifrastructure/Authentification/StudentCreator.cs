@@ -7,7 +7,7 @@ using Modules.Students.Infrastructure.Identity;
 
 namespace Modules.Students.Infrastructure.Authentification
 {
-	internal class StudentCreator(UserManager<StudentIdentity> userManager)
+	public class StudentCreator(UserManager<StudentIdentity> userManager)
 		: IStudentCreator
 	{
 		public async Task CreateAsync(Student student, string password, CancellationToken cancellationToken = default)

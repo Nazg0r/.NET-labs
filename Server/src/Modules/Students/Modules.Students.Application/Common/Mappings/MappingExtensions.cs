@@ -1,7 +1,4 @@
-﻿using Modules.Students.Application.Common.Models;
-using Modules.Students.Domain.Entities;
-
-namespace Modules.Students.Application.Common.Mappings
+﻿namespace Modules.Students.Application.Common.Mappings
 {
 	public static class MappingExtensions
 	{
@@ -24,4 +21,4 @@ namespace Modules.Students.Application.Common.Mappings
 				Group = source.Group,
 			};
 	}
-}
+}	
