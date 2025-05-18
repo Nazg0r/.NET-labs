@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\TetsTools\TestsTools.csproj" />
     <ProjectReference Include="..\..\..\..\src\Modules\Students\Modules.Students.Application\Modules.Students.Application.csproj" />
     <ProjectReference Include="..\..\..\TetsTools\TestsTools.csproj" />
   </ItemGroup>
