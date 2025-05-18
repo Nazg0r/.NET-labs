@@ -20,6 +20,7 @@ builder.AddStudentModuleApplication();
 builder.AddWorksModuleApplication();
 builder.AddWorksModulePersistence();
 
+if (!builder.Environment.IsEnvironment("Testing"))
 builder.Services.AddConfiguredMassTransit();
 builder.Services.AddConfiguredCors(config);
 
@@ -46,3 +47,5 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 });
 
 app.Run();
+
+public partial class Program;
