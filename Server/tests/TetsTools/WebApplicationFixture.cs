@@ -18,6 +18,7 @@ using MassTransit;
 using Modules.Students.Application.UseCases;
 using Modules.Works.Application.UseCases;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace TestsTools
 {
@@ -43,6 +44,17 @@ namespace TestsTools
 		protected override void ConfigureWebHost(IWebHostBuilder builder)
 		{
 			builder.UseEnvironment("Testing");
+
+			builder.ConfigureAppConfiguration((context, config) =>
+			{
+				var testConfig = new Dictionary<string, string>
+				{
+					["JWT:Secret"] = "gH2e3nE7A1Jr87Kv5G2JXyMPC1+jf0BZoD+zPrw3JwY=",
+					["JWT:Expires"] = "60"
+				};
+
+				config.AddInMemoryCollection(testConfig!);
+			});
 
 			builder.ConfigureTestServices(services =>
 			{
