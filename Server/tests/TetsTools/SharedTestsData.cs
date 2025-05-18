@@ -113,7 +113,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("home work"),
 				FileName = "original",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -123,7 +123,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("my home work"),
 				FileName = "copy",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -133,7 +133,17 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("task"),
 				FileName = "irrelevant",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
+				StudentId = Guid.NewGuid().ToString()
+			},
+
+			new Work
+			{
+				Id = Guid.NewGuid(),
+				Content = Encoding.UTF8.GetBytes("home work"),
+				FileName = "copy",
+				Extension = ".cs",
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -143,7 +153,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("home task"),
 				FileName = "extra",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			}
 		];
@@ -156,7 +166,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("home work"),
 				FileName = "original",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -166,7 +176,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("my home work"),
 				FileName = "copy",
 				Extension = ".txt",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -176,7 +186,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("task"),
 				FileName = "irrelevant",
 				Extension = ".cs",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			},
 
@@ -186,7 +196,7 @@ namespace TestsTools
 				Content = Encoding.UTF8.GetBytes("home task"),
 				FileName = "extra",
 				Extension = ".c",
-				LoadDate = DateTime.Now,
+				LoadDate = DateTime.Now.ToUniversalTime(),
 				StudentId = Guid.NewGuid().ToString()
 			}
 		];
