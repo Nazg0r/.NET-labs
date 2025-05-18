@@ -24,7 +24,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status404NotFound)
 				.WithDescription("Endpoint for getting work by workId")
 				.WithName("GetWorkById")
-				.WithSummary("get work by workId");
+				.WithSummary("get work by workId")
+				.RequireAuthorization();
 
 			endpoints.MapGet("/api/studentwork", async (
 					[FromServices] GetAllWorksHandler handler,
@@ -37,7 +38,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status404NotFound)
 				.WithDescription("Endpoint for getting all works")
 				.WithName("GetAllWorks")
-				.WithSummary("get all works");
+				.WithSummary("get all works")
+				.RequireAuthorization();
 
 			endpoints.MapGet("/api/studentwork/plagiarism/{id:guid}", async (
 					[FromRoute] Guid id,
@@ -51,7 +53,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status404NotFound)
 				.WithDescription("Endpoint for getting similarity percentage")
 				.WithName("GetSimilarityPercentage")
-				.WithSummary("get similarity percentage");
+				.WithSummary("get similarity percentage")
+				.RequireAuthorization();
 
 			endpoints.MapDelete("/api/studentwork/{id:guid}", async (
 					[FromRoute] Guid id,
@@ -66,7 +69,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status404NotFound)
 				.WithDescription("Endpoint for deleting work")
 				.WithName("DeleteWork")
-				.WithSummary("delete work");
+				.WithSummary("delete work")
+				.RequireAuthorization();
 
 			endpoints.MapPost("/api/studentwork/upload/{id}", async (
 					[FromRoute] string id,
@@ -88,7 +92,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status400BadRequest)
 				.WithDescription("Endpoint uploading work")
 				.WithName("UploadWork")
-				.WithSummary("upload work");
+				.WithSummary("upload work")
+				.RequireAuthorization();
 
 			return endpoints;
 		}

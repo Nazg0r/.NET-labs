@@ -56,7 +56,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status400BadRequest)
 				.WithDescription("Endpoint for getting student by username")
 				.WithName("GetByUsername")
-				.WithSummary("get student by username");
+				.WithSummary("get student by username")
+				.RequireAuthorization();
 
 			endpoints.MapGet("/api/student/work/{workId:guid}", async (
 					[FromRoute] Guid workId,
@@ -70,7 +71,8 @@ namespace API.Endpoints
 				.ProducesProblem(StatusCodes.Status400BadRequest)
 				.WithDescription("Endpoint for getting student by work workId")
 				.WithName("GetByWorkId")
-				.WithSummary("get student by work workId");
+				.WithSummary("get student by work workId")
+				.RequireAuthorization();
 
 			return endpoints;
 		}
