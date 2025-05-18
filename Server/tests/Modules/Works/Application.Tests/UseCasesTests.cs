@@ -197,7 +197,7 @@ namespace Application.Tests
 		public class GetSimilarityPercentage : UseCasesTests
 		{
 			[Fact]
-			public async Task Should_ReturnListOfThreePlagiarismResponseDto_WhenFourWorksStored_WithTheSameExtension()
+			public async Task Should_ReturnListOfFourPlagiarismResponseDto_WhenFourWorksStored_WithTheSameExtension()
 			{
 				// Arrange
 				var selectedWork = SharedTestsData.WorksWithSameExtension.First();
@@ -212,9 +212,9 @@ namespace Application.Tests
 				// Assert
 				Assert.NotNull(result);
 				Assert.IsType<List<GetSimilarityPercentageResponse>>(result);
-				Assert.Equal(3, result.Count);
+				Assert.Equal(4, result.Count);
 				Assert.True(result[0].SimilarityPercentage >= result[1].SimilarityPercentage);
-				Assert.Equal(SharedTestsData.WorksWithSameExtension[1].Id, result.First().Id);
+				Assert.Equal(SharedTestsData.WorksWithSameExtension[3].Id, result.First().Id);
 				Assert.Equal(SharedTestsData.WorksWithSameExtension[2].Id, result.Last().Id);
 				Assert.DoesNotContain(result, r => r.Id == selectedWork.Id);
 				_workRepositoryMock.Verify(r => r.GetAllWorksAsync(), Times.Once);
