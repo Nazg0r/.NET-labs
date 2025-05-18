@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using BuildingBlocks.Contracts;
+using MassTransit;
 using Modules.Works.Application.Common.Mappings;
 using Modules.Works.IntegrationEvents;
 

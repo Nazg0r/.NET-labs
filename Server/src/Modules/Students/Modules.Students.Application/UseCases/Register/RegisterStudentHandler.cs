@@ -1,4 +1,6 @@
-﻿namespace Modules.Students.Application.UseCases.Register
+﻿using BuildingBlocks.Contracts;
+
+namespace Modules.Students.Application.UseCases.Register
 {
 	public class RegisterStudentHandler(IStudentCreator studentCreator) : ICommandHandler<RegisterStudentCommand>
 	{

@@ -1,4 +1,6 @@
-﻿namespace Modules.Students.Application.UseCases.GetStudentByWorkId
+﻿using BuildingBlocks.Contracts;
+
+namespace Modules.Students.Application.UseCases.GetStudentByWorkId
 {
 	public class GetAuthorByWorkIdHandler(IStudentQueries studentQueries)
 		: IQueryHandler<Guid, string>

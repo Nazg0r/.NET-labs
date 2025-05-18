@@ -1,4 +1,5 @@
-﻿using Modules.Works.Application.Common.Mappings;
+﻿using BuildingBlocks.Contracts;
+using Modules.Works.Application.Common.Mappings;
 using Modules.Works.Domain.Exceptions;
 
 namespace Modules.Works.Application.UseCases.GetAllWorks

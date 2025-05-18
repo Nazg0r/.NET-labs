@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using BuildingBlocks.Contracts;
+using MassTransit;
 using Modules.Students.IntegrationEvents;
 using Modules.Works.IntegrationEvents;
 

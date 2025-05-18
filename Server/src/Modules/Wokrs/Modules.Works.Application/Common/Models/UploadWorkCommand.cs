@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BuildingBlocks.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace Modules.Works.Application.Common.Models
 {

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BuildingBlocks.Contracts;
 using Modules.Works.Domain.Exceptions;
 
 namespace Modules.Works.Application.UseCases.GetSimilarityPercentage

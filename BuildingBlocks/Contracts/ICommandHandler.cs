@@ -1,4 +1,4 @@
-﻿namespace Modules.Students.Application.Contracts
+﻿namespace BuildingBlocks.Contracts
 {
 	public interface ICommandHandler<in TCommand>
 		where TCommand : ICommand

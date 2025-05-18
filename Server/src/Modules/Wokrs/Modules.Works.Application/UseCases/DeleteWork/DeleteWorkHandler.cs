@@ -1,4 +1,6 @@
-﻿namespace Modules.Works.Application.UseCases.DeleteWork
+﻿using BuildingBlocks.Contracts;
+
+namespace Modules.Works.Application.UseCases.DeleteWork
 {
 	public class DeleteWorkHandler(IWorkRepository repository) : ICommandHandler<DeleteWorkCommand, bool>
 	{

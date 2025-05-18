@@ -1,4 +1,6 @@
-﻿namespace Modules.Students.Application.Common.Models
+﻿using BuildingBlocks.Contracts;
+
+namespace Modules.Students.Application.Common.Models
 {
 	public class RegisterStudentCommand : CommandBase
 	{

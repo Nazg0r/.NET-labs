@@ -1,4 +1,4 @@
-﻿namespace Modules.Works.Application.Contracts
+﻿namespace BuildingBlocks.Contracts
 {
 	public interface IQueryHandler<in TQuery, TResponse>
 	{

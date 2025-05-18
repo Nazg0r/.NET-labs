@@ -1,4 +1,6 @@
-﻿namespace Modules.Students.Application.UseCases.Login
+﻿using BuildingBlocks.Contracts;
+
+namespace Modules.Students.Application.UseCases.Login
 {
 	public class LoginStudentHandler(
 		IJwtTokenGenerator tokenGenerator,
