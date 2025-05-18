@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Modules.Students.Domain.Exceptions;
 using System.Diagnostics.CodeAnalysis;
+using BuildingBlocks.Exceptions;
 using FluentValidation;
 
 namespace API.Infrastructure
