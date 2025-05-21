@@ -16,3 +16,16 @@ services:
     restart: always
     ports:
     - "6379:6379"
+
+  rebbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+       - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

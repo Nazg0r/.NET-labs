@@ -1,6 +1,0 @@
-@PlagiarismChecker_HostAddress = http://localhost:5268
-
-GET {{PlagiarismChecker_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
