@@ -9,7 +9,6 @@ namespace Modules.Works.Infrastructure
 	{
 		public static void AddWorksModuleInfrastructure(this IHostApplicationBuilder builder)
 		{
-			builder.Services.AddScoped<ICsvBuilder, CsvBuilder>();
 			builder.Services.AddScoped<ICsvParser, CsvParser>();
 		}
 	}
