@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Modules.Works.Application.Common.Models;
 using Modules.Works.Application.UseCases.BulkExport;
+using Modules.Works.Application.UseCases.BulkImport;
 using Modules.Works.Application.UseCases.DeleteWork;
 using Modules.Works.Application.UseCases.GetAllWorks;
 using Modules.Works.Application.UseCases.GetSimilarityPercentage;
@@ -101,9 +102,22 @@ namespace API.Endpoints
 				[FromServices] BulkExportHandler handler,
 				CancellationToken cancellationToken) =>
 			{
-				var csv = await handler.HandleAsync(Unit.Value ,cancellationToken);
+				var csv = await handler.HandleAsync(Unit.Value, cancellationToken);
 				return TypedResults.File(csv, "text/csv", "student_works.csv");
 			});
+
+			endpoints.MapPost("/api/studentwork/import", async (
+					[FromForm] IFormFile file,
+					[FromServices] BulkImportHandler handler,
+					CancellationToken cancellationToken) =>
+				{
+					var command = new BulkImportCommand()
+					{
+						File = file
+					};
+					await handler.HandleAsync(command, cancellationToken);
+				})
+				.DisableAntiforgery();
 
 			return endpoints;
 		}
