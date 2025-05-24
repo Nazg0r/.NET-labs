@@ -9,7 +9,7 @@ namespace Modules.Works.Application.UseCases.GetSimilarityPercentage
 		public async Task<List<GetSimilarityPercentageResponse>> HandleAsync(Guid query, CancellationToken cancellationToken)
 		{
 			var allWorks = await repository.GetAllWorksAsync();
-			var selectedWork = allWorks.FirstOrDefault(w => w.Id == query);
+			var selectedWork = allWorks.Find(w => w.Id == query);
 
 			if (selectedWork is null) throw new StudentWorkNotFoundException(query);
 
