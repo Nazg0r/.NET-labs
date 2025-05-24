@@ -11,7 +11,7 @@ namespace Modules.Works.Persistence.Repositories
 			await context.Works.FindAsync(id);
 
 		public async Task<List<Work>> GetAllWorksAsync() =>
-			await context.Works.ToListAsync();
+			await context.Works.AsNoTracking().ToListAsync();
 
 		public async Task<List<Work>> GetWorksByStudentIdAsync(string id) =>
 			await context.Works.AsNoTracking().Where(w => w.StudentId == id).ToListAsync();
@@ -26,14 +26,11 @@ namespace Modules.Works.Persistence.Repositories
 
 		public async Task<bool> DeleteWorkAsync(Guid id)
 		{
-			var studentWork = await context.Works.FindAsync(id);
+			var affectedRows = await context.Works
+				.Where(w => w.Id == id)
+				.ExecuteDeleteAsync();
 
-			if (studentWork is null) return false;
-
-			context.Remove(studentWork);
-			await context.SaveChangesAsync();
-
-			return true;
+			return affectedRows > 0;
 		}
 	}
 }

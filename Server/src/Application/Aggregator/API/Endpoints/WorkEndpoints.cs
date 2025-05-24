@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BuildingBlocks.Models;
+using Microsoft.AspNetCore.Mvc;
 using Modules.Works.Application.Common.Models;
 using Modules.Works.Application.UseCases.DeleteWork;
 using Modules.Works.Application.UseCases.GetAllWorks;

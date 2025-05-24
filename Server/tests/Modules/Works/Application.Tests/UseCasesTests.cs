@@ -9,6 +9,7 @@ using Modules.Works.Domain.Entities;
 using Modules.Works.Domain.Exceptions;
 using Moq;
 using System.Text;
+using BuildingBlocks.Models;
 using MassTransit;
 using Modules.Students.IntegrationEvents;
 using Modules.Works.Application.UseCases;

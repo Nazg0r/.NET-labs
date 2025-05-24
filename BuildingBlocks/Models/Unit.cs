@@ -1,9 +1,11 @@
-﻿namespace Modules.Works.Application.Common.Models
+﻿namespace BuildingBlocks.Models
 {
 	public sealed class Unit
 	{
 		public static readonly Unit Value = new Unit();
-		private Unit() { }
-	}
 
+		private Unit()
+		{
+		}
+	}
 }

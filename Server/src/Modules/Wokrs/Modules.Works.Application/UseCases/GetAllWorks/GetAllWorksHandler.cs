@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Contracts;
+using BuildingBlocks.Models;
 using Modules.Works.Application.Common.Mappings;
 using Modules.Works.Domain.Exceptions;
 
