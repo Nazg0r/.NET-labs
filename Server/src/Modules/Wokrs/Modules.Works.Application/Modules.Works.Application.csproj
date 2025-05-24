@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Modules.Works.IntegrationEvents\Modules.Works.IntegrationEvents.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\BulkImport\" />
+  </ItemGroup>
+
 </Project>
