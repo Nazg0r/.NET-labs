@@ -99,12 +99,18 @@ namespace API.Endpoints
 				.RequireAuthorization();
 
 			endpoints.MapGet("/api/studentwork/export", async (
-				[FromServices] BulkExportHandler handler,
-				CancellationToken cancellationToken) =>
-			{
-				var csv = await handler.HandleAsync(Unit.Value, cancellationToken);
-				return TypedResults.File(csv, "text/csv", "student_works.csv");
-			});
+					[FromServices] BulkExportHandler handler,
+					CancellationToken cancellationToken) =>
+				{
+					var csv = await handler.HandleAsync(Unit.Value, cancellationToken);
+					return TypedResults.File(csv, "text/csv", "student_works.csv");
+				})
+				.Produces(StatusCodes.Status200OK)
+				.ProducesProblem(StatusCodes.Status404NotFound)
+				.WithDescription("Endpoint for works export")
+				.WithName("ExportWorks")
+				.WithSummary("export work")
+				.RequireAuthorization();
 
 			endpoints.MapPost("/api/studentwork/import", async (
 					[FromForm] IFormFile file,
@@ -117,8 +123,13 @@ namespace API.Endpoints
 					};
 					await handler.HandleAsync(command, cancellationToken);
 				})
-				.DisableAntiforgery();
-
+				.DisableAntiforgery()
+				.Produces(StatusCodes.Status201Created)
+				.ProducesProblem(StatusCodes.Status400BadRequest)
+				.WithDescription("Endpoint for works import")
+				.WithName("ImportWorks")
+				.WithSummary("import work")
+				.RequireAuthorization();
 			return endpoints;
 		}
 	}
