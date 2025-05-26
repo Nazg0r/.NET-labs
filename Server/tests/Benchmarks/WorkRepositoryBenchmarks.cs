@@ -47,7 +47,7 @@ namespace Benchmarks
 		[Benchmark]
 		public async Task<Work?> GetWorkByIdAsync() =>
 			await _context.Works.FindAsync(_workId);
-		
+
 		[Benchmark]
 		public Task<Work?> GetWorkByIdAsyncCompiled() =>
 			GetWorkByIdAsyncComp(_context, _workId);
@@ -55,7 +55,7 @@ namespace Benchmarks
 		[Benchmark]
 		public async Task<List<Work>> GetAllWorksAsync() =>
 			await _context.Works.AsNoTracking().ToListAsync();
-		
+
 		[Benchmark]
 		public List<Work> GetAllWorksCompiled() =>
 			GetAllWorkComp(_context);

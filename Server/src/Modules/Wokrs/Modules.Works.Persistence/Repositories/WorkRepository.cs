@@ -30,7 +30,6 @@ namespace Modules.Works.Persistence.Repositories
 			var affectedRows = await context.Works
 				.Where(w => w.Id == id)
 				.ExecuteDeleteAsync();
-
 			return affectedRows > 0;
 		}
 
