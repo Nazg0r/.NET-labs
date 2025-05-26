@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit.Internals;
+using Microsoft.EntityFrameworkCore;
 using Modules.Works.Application.Contracts;
 using Modules.Works.Domain.Entities;
 using Modules.Works.Persistence.Data;
@@ -14,7 +15,7 @@ namespace Modules.Works.Persistence.Repositories
 			await context.Works.AsNoTracking().ToListAsync();
 
 		public async Task<List<Work>> GetWorksByStudentIdAsync(string id) =>
-			await context.Works.AsNoTracking().Where(w => w.StudentId == id).ToListAsync();
+			(List<Work>)await GetWorksByStudentIdAsyncCompiled(context, id).ToListAsync();
 
 		public async Task<Work> AddNewWorkAsync(Work work)
 		{
@@ -32,5 +33,9 @@ namespace Modules.Works.Persistence.Repositories
 
 			return affectedRows > 0;
 		}
+
+		private static readonly Func<WorkDbContext, string, IAsyncEnumerable<Work>> GetWorksByStudentIdAsyncCompiled =
+			EF.CompileAsyncQuery((WorkDbContext context, string studentId) =>
+				context.Works.AsNoTracking().Where(w => w.StudentId == studentId));
 	}
 }
