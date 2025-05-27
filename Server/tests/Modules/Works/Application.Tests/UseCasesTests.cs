@@ -11,9 +11,6 @@ using Moq;
 using System.Text;
 using BuildingBlocks.Models;
 using MassTransit;
-using Modules.Students.IntegrationEvents;
-using Modules.Works.Application.UseCases;
-using Modules.Works.IntegrationEvents;
 using TestsTools;
 using Modules.Works.Application.UseCases.GetSimilarityPercentage;
 
@@ -21,12 +18,7 @@ namespace Application.Tests
 {
 	public class UseCasesTests
 	{
-		private readonly Mock<IWorkRepository> _workRepositoryMock;
-
-		public UseCasesTests()
-		{
-			_workRepositoryMock = new Mock<IWorkRepository>();
-		}
+		private readonly Mock<IWorkRepository> _workRepositoryMock = new();
 
 		public class DeleteWorkTests : UseCasesTests
 		{

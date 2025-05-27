@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\..\..\Modules\Students\Modules.Students.Persistence\Modules.Students.Persistence.csproj" />
     <ProjectReference Include="..\..\..\Modules\Wokrs\Modules.Works.Persistence\Modules.Works.Persistence.csproj" />
   </ItemGroup>

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\..\Wokrs\Modules.Works.IntegrationEvents\Modules.Works.IntegrationEvents.csproj" />
     <ProjectReference Include="..\Modules.Students.Domain\Modules.Students.Domain.csproj" />
     <ProjectReference Include="..\Modules.Students.IntegrationEvents\Modules.Students.IntegrationEvents.csproj" />

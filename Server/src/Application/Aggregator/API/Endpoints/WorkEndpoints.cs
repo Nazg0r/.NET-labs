@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Models;
 using Hangfire;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Works.Application.Common.Models;
 using Modules.Works.Application.UseCases.BulkExport;
@@ -13,7 +12,6 @@ using Modules.Works.Application.UseCases.GetWorkById;
 using Modules.Works.Application.UseCases.UploadWork;
 using Modules.Works.Domain.Exceptions;
 using Modules.Works.Infrastructure.Jobs;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace API.Endpoints
 {
