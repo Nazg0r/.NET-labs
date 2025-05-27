@@ -88,7 +88,7 @@ namespace API.Endpoints
 					var filePath = await SaveTempFile(file, conf, cancellationToken);
 
 					var jobId = backgroundJobClient.Enqueue<UploadFileJob>(job =>
-						job.ProcessAsync(filePath, id));
+						job.ProcessAsync(null!, filePath, id));
 
 					return TypedResults.Created("/api/studentwork/upload/{id}",
 						new { message = "Upload job has been queued.", jobId = jobId });

@@ -14,12 +14,12 @@ namespace Modules.Works.Infrastructure.Jobs
 		IJobRepository jobRepository)
 	{
 		public async Task ProcessAsync(string filePath, string studentId) =>
-			await ProcessInternalAsync(filePath, studentId, null);
+			await ProcessInternalAsync(null, filePath, studentId);
 
-		public async Task ProcessAsync(string filePath, string studentId, PerformContext context) =>
-			await ProcessInternalAsync(filePath, studentId, context);
+		public async Task ProcessAsync(PerformContext context, string filePath, string studentId) =>
+			await ProcessInternalAsync(context, filePath, studentId);
 
-		private async Task ProcessInternalAsync(string filePath, string studentId, PerformContext? context)
+		private async Task ProcessInternalAsync(PerformContext? context, string filePath, string studentId)
 		{
 			var jobId = context?.BackgroundJob?.Id;
 			var fileName = Path.GetFileName(filePath)[Length.GuidLength..];

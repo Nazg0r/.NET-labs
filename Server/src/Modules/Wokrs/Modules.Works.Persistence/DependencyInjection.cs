@@ -21,7 +21,7 @@ namespace Modules.Works.Persistence
 
 			builder.Services.AddSingleton<IWorkRepository, WorkRepository>();
 			builder.Services.Decorate<IWorkRepository, CachedWorkRepository>();
-			builder.Services.Decorate<IJobRepository, JobRepository>();
+			builder.Services.AddSingleton<IJobRepository, JobRepository>();
 
 			builder.Services.AddStackExchangeRedisCache(opt =>
 			{
