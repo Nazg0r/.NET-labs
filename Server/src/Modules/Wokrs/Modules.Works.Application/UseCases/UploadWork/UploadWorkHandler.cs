@@ -1,27 +1,26 @@
 ﻿using BuildingBlocks.Contracts;
 using MassTransit;
-using Modules.Works.Application.Common.Mappings;
 using Modules.Works.IntegrationEvents;
 
 namespace Modules.Works.Application.UseCases.UploadWork
 {
-	public class UploadWorkHandler(IWorkRepository repository, IBus bus) : ICommandHandler<UploadWorkCommand, ProcessedWorkResponse>
+	public class UploadWorkHandler(IWorkRepository repository, IBus bus) : ICommandHandler<UploadWorkCommand>
 	{
-		public async Task<ProcessedWorkResponse> HandleAsync(UploadWorkCommand command,
+		public async Task HandleAsync(UploadWorkCommand command,
 			CancellationToken cancellationToken)
 		{
-			var file = command.File;
+			await using var file = command.FileStream;
 			if (file is null) throw new ArgumentException("Work is not uploaded");
 
-			var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+			var extension = Path.GetExtension(command.FileName).ToLowerInvariant();
 			var memoryStream = new MemoryStream();
 
 			await file.CopyToAsync(memoryStream, cancellationToken);
 
 			var workEntity = new Work
 			{
-				FileName = Path.GetFileNameWithoutExtension(file.FileName),
-				Extension = Path.GetExtension(file.FileName).ToLowerInvariant(),
+				FileName = Path.GetFileNameWithoutExtension(command.FileName),
+				Extension = extension,
 				LoadDate = DateTime.UtcNow,
 				Content = memoryStream.ToArray(),
 				StudentId = command.StudentId
@@ -30,8 +29,6 @@ namespace Modules.Works.Application.UseCases.UploadWork
 			await repository.AddNewWorkAsync(workEntity);
 
 			await bus.Publish(new WorkUploadedEvent(workEntity.Id, workEntity.StudentId), CancellationToken.None);
-
-			return workEntity.ToDto();
 		}
 	}
 }
