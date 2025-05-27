@@ -3,6 +3,6 @@
 	public interface IJobRepository
 	{
 		public Task<bool> StoreJobResultAsync(UploadFIleJobResult jobResult);
-		public Task<UploadFIleJobResult?> GetJobResultByJobIdAsync(string jobId);
+		public Task<UploadFIleJobResult?> GetAndRemoveJobResultByJobIdAsync(string jobId);
 	}
 }

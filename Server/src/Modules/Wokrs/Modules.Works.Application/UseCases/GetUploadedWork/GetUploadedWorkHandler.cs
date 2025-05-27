@@ -11,7 +11,7 @@ namespace Modules.Works.Application.UseCases.GetUploadedWork
 	{
 		public async Task<ProcessedWorkResponse> HandleAsync(string query, CancellationToken cancellationToken)
 		{
-			var jobResult = await jobRepository.GetJobResultByJobIdAsync(query);
+			var jobResult = await jobRepository.GetAndRemoveJobResultByJobIdAsync(query);
 			if (jobResult is null) throw new JobResultNotFoundException(query);
 
 			var work = await workRepository.GetWorkByIdAsync(jobResult.WorkId);

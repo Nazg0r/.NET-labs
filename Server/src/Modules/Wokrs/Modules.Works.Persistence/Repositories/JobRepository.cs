@@ -15,8 +15,16 @@ namespace Modules.Works.Persistence.Repositories
 			return affectedRows > 0;
 		}
 
-		public async Task<UploadFIleJobResult?> GetJobResultByJobIdAsync(string jobId) =>
-			await context.UploadFIleJobResults
+		public async Task<UploadFIleJobResult?> GetAndRemoveJobResultByJobIdAsync(string jobId) {
+
+			var result = await context.UploadFIleJobResults
 				.FirstOrDefaultAsync(r => r.JobId == jobId);
+
+			await context.UploadFIleJobResults
+				.Where(r => r.JobId == jobId)
+				.ExecuteDeleteAsync();
+
+			return result;
+		}
 	}
 }
