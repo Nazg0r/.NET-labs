@@ -1,6 +1,7 @@
 using API.Endpoints;
 using API.Extensions;
 using API.Infrastructure;
+using Hangfire;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Modules.Students.Application;
@@ -25,6 +26,7 @@ builder.AddWorksModulePersistence();
 if (!builder.Environment.IsEnvironment("Testing"))
 builder.Services.AddConfiguredMassTransit();
 builder.Services.AddConfiguredCors(config);
+builder.Services.AddConfiguredHangfire(config);
 
 builder.Services.AddExceptionHandler<ErrorHandler>();
 builder.Services.AddHealthChecks()
@@ -40,6 +42,8 @@ app.MapWorkEndpoints();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard();
 
 app.UseExceptionHandler(opt => { });
 
