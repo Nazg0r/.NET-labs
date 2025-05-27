@@ -4,6 +4,6 @@ namespace Modules.Works.Application.Contracts
 {
 	public interface ICsvParser
 	{
-		public List<Work> ParseCsv(IFormFile file);
+		public List<Work> ParseCsv(Stream stream);
 	}
 }
