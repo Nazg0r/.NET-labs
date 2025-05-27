@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Models;
 using Hangfire;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Works.Application.Common.Models;
 using Modules.Works.Application.UseCases.BulkExport;
@@ -7,9 +8,12 @@ using Modules.Works.Application.UseCases.BulkImport;
 using Modules.Works.Application.UseCases.DeleteWork;
 using Modules.Works.Application.UseCases.GetAllWorks;
 using Modules.Works.Application.UseCases.GetSimilarityPercentage;
+using Modules.Works.Application.UseCases.GetUploadedWork;
 using Modules.Works.Application.UseCases.GetWorkById;
 using Modules.Works.Application.UseCases.UploadWork;
+using Modules.Works.Domain.Exceptions;
 using Modules.Works.Infrastructure.Jobs;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace API.Endpoints
 {
@@ -99,6 +103,36 @@ namespace API.Endpoints
 				.WithDescription("Endpoint uploading work")
 				.WithName("UploadWork")
 				.WithSummary("upload work")
+				.RequireAuthorization();
+
+			endpoints.MapGet("/api/studentwork/upload/status/{jobId}", async Task<IResult> (
+					[FromRoute] string jobId,
+					[FromServices] GetUploadedWorkHandler handler,
+					CancellationToken cancellationToken) =>
+				{
+					var jobData = JobStorage.Current.GetMonitoringApi().JobDetails(jobId);
+					if (jobData == null || jobData.History.Count == 0)
+						throw new JobResultNotFoundException(jobId);
+
+					var state = jobData.History[0].StateName;
+
+					if (state != "Succeeded")
+						return TypedResults.Accepted($"/api/studentwork/upload/status/{jobId}", new
+						{
+							jobId,
+							status = state,
+							message = "The job is still in progress. Please try again later."
+						});
+
+					var result = await handler.HandleAsync(jobId, cancellationToken);
+
+					return TypedResults.Ok(result);
+				})
+				.Produces(StatusCodes.Status200OK)
+				.ProducesProblem(StatusCodes.Status400BadRequest)
+				.WithDescription("Endpoint for getting uploaded work")
+				.WithName("GetUploadedWork")
+				.WithSummary("get uploaded work")
 				.RequireAuthorization();
 
 			endpoints.MapGet("/api/studentwork/export", async (
