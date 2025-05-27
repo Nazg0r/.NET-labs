@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Works.Application.Common.Models;
 using Modules.Works.Application.UseCases.BulkExport;
@@ -8,6 +9,7 @@ using Modules.Works.Application.UseCases.GetAllWorks;
 using Modules.Works.Application.UseCases.GetSimilarityPercentage;
 using Modules.Works.Application.UseCases.GetWorkById;
 using Modules.Works.Application.UseCases.UploadWork;
+using Modules.Works.Infrastructure.Jobs;
 
 namespace API.Endpoints
 {
@@ -79,16 +81,17 @@ namespace API.Endpoints
 					[FromRoute] string id,
 					[FromForm] IFormFile file,
 					[FromServices] UploadWorkHandler handler,
+					[FromServices] IBackgroundJobClient backgroundJobClient,
+					[FromServices] IConfiguration conf,
 					CancellationToken cancellationToken) =>
 				{
-					var command = new UploadWorkCommand()
-					{
-						StudentId = id,
-						File = file
-					};
+					var filePath = await SaveTempFile(file, conf, cancellationToken);
 
-					var result = await handler.HandleAsync(command, cancellationToken);
-					return TypedResults.Created($"/api/studentwork/{result.Id}", result);
+					backgroundJobClient.Enqueue<UploadFileJob>(job =>
+						job.ProcessAsync(filePath, id));
+
+					return TypedResults.Created("/api/studentwork/upload/{id}",
+						new { message = "Upload job has been queued." });
 				})
 				.DisableAntiforgery()
 				.Produces(StatusCodes.Status201Created)
@@ -115,13 +118,17 @@ namespace API.Endpoints
 			endpoints.MapPost("/api/studentwork/import", async (
 					[FromForm] IFormFile file,
 					[FromServices] BulkImportHandler handler,
+					[FromServices] IBackgroundJobClient backgroundJobClient,
+					[FromServices] IConfiguration conf,
 					CancellationToken cancellationToken) =>
 				{
-					var command = new BulkImportCommand()
-					{
-						File = file
-					};
-					await handler.HandleAsync(command, cancellationToken);
+					var filePath = await SaveTempFile(file, conf, cancellationToken);
+
+					backgroundJobClient.Enqueue<ImportDataJob>(job =>
+						job.ProcessAsync(filePath));
+
+					return TypedResults.Created("/api/studentwork/import",
+						new { message = "Import job has been queued." });
 				})
 				.DisableAntiforgery()
 				.Produces(StatusCodes.Status201Created)
@@ -131,6 +138,21 @@ namespace API.Endpoints
 				.WithSummary("import work")
 				.RequireAuthorization();
 			return endpoints;
+		}
+
+		private static async Task<string> SaveTempFile(IFormFile file, IConfiguration conf,
+			CancellationToken cancellationToken)
+		{
+			var uploadDirPath = conf["UploadDir:Path"]!;
+			Directory.CreateDirectory(uploadDirPath);
+
+			var filePath = Path.Combine(uploadDirPath, $"{Guid.NewGuid()}_{file.FileName}");
+
+			await using var stream = new FileStream(filePath, FileMode.Create);
+
+			await file.CopyToAsync(stream, cancellationToken);
+
+			return filePath;
 		}
 	}
 }
