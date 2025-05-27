@@ -87,11 +87,11 @@ namespace API.Endpoints
 				{
 					var filePath = await SaveTempFile(file, conf, cancellationToken);
 
-					backgroundJobClient.Enqueue<UploadFileJob>(job =>
+					var jobId = backgroundJobClient.Enqueue<UploadFileJob>(job =>
 						job.ProcessAsync(filePath, id));
 
 					return TypedResults.Created("/api/studentwork/upload/{id}",
-						new { message = "Upload job has been queued." });
+						new { message = "Upload job has been queued.", jobId = jobId });
 				})
 				.DisableAntiforgery()
 				.Produces(StatusCodes.Status201Created)
