@@ -1,11 +1,11 @@
 ﻿using BuildingBlocks.Contracts;
-using Microsoft.AspNetCore.Http;
 
 namespace Modules.Works.Application.Common.Models
 {
 	public class UploadWorkCommand : CommandBase
 	{
-		public IFormFile File { get; set; } = null!;
+		public Stream FileStream { get; set; } = null!;
+		public string FileName { get; init; } = null!;
 		public string StudentId { get; set; } = null!;
 	}
 }
