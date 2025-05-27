@@ -4,9 +4,12 @@ using Modules.Works.IntegrationEvents;
 
 namespace Modules.Works.Application.UseCases.UploadWork
 {
-	public class UploadWorkHandler(IWorkRepository repository, IBus bus) : ICommandHandler<UploadWorkCommand>
+	public class UploadWorkHandler(
+		IWorkRepository repository,
+		IBus bus)
+		: ICommandHandler<UploadWorkCommand, Work>
 	{
-		public async Task HandleAsync(UploadWorkCommand command,
+		public async Task<Work> HandleAsync(UploadWorkCommand command,
 			CancellationToken cancellationToken)
 		{
 			await using var file = command.FileStream;
@@ -29,6 +32,8 @@ namespace Modules.Works.Application.UseCases.UploadWork
 			await repository.AddNewWorkAsync(workEntity);
 
 			await bus.Publish(new WorkUploadedEvent(workEntity.Id, workEntity.StudentId), CancellationToken.None);
+
+			return workEntity;
 		}
 	}
 }
