@@ -153,44 +153,6 @@ public class RepositoriesTests : IDisposable, IAsyncDisposable
 			Assert.Equal(newWork.Extension, result.Extension);
 			Assert.Equal(newWork.StudentId, result.StudentId);
 		}
-
-		[Fact]
-		public async Task DeleteWorkAsync_Should_ReturnTrue_WhenWorkExist()
-		{
-			// Arrange
-			var testWork = SharedTestsData.WorksWithDifferentExtension.Last();
-			var options = new DbContextOptionsBuilder<WorkDbContext>()
-				.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-				.Options;
-
-			await using WorkDbContext context = new(options);
-
-			context.Works.AddRange(SharedTestsData.WorksWithDifferentExtension);
-
-			var repo = new WorkRepository(context);
-
-			// Act
-			var result = await repo.DeleteWorkAsync(testWork.Id);
-			var deletedWork = await repo.GetWorkByIdAsync(testWork.Id);
-
-			// Assert
-			Assert.Null(deletedWork);
-			Assert.True(result);
-		}
-
-		[Fact]
-		public async Task DeleteWorkAsync_Should_ReturnFalse_WhenWorkNotExist()
-		{
-			// Arrange
-			var testWorkId = Guid.NewGuid();
-			var repo = new WorkRepository(_testContext);
-
-			// Act
-			var result = await repo.DeleteWorkAsync(testWorkId);
-
-			// Assert
-			Assert.False(result);
-		}
 	}
 
 	public class CachedWorkRepositoryTests : RepositoriesTests

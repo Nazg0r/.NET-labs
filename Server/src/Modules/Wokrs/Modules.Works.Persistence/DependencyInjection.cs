@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Modules.Works.Application.Contracts;
+using Modules.Works.Persistence.Bulk;
 using Modules.Works.Persistence.Data;
 using Modules.Works.Persistence.Repositories;
 
@@ -20,11 +21,14 @@ namespace Modules.Works.Persistence
 
 			builder.Services.AddSingleton<IWorkRepository, WorkRepository>();
 			builder.Services.Decorate<IWorkRepository, CachedWorkRepository>();
+			builder.Services.AddSingleton<IJobRepository, JobRepository>();
 
 			builder.Services.AddStackExchangeRedisCache(opt =>
 			{
 				opt.Configuration = connectionStringCache;
 			});
+
+			builder.Services.AddScoped<IBulkOperations, BulkOperations>();
 		}
 	}
 }

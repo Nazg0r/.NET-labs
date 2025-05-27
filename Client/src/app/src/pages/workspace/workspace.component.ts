@@ -9,10 +9,11 @@ import {
 import { StudentInfoService } from '../studentInfo.service';
 import { StudentWork } from './studentWork.model';
 import { StudentWorkComponent } from './student-work/student-work.component';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { NotificationService } from '../notifications/notification.service';
 import { FormsModule } from '@angular/forms';
 import { DetailsComponent } from './student-work/details/details.component';
+import { interval, switchMap, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
@@ -54,7 +55,7 @@ export class WorkspaceComponent implements OnInit {
       formData.append('file', selectedFile);
 
       const subscription = this.httpClient
-        .post<StudentWork>(
+        .post<StudentWork | { jobId: string; status: string; message: string }>(
           `http://localhost:5000/api/studentwork/upload/${studentId}`,
           formData,
           {
@@ -62,12 +63,20 @@ export class WorkspaceComponent implements OnInit {
           },
         )
         .subscribe({
-          next: (resp) => {
-            if (resp.type == HttpEventType.Response) {
-              this.notificationService.addSuccessNotification(
-                `File ${selectedFile.name} successfully uploaded`,
-              );
-              if (resp?.body) this.studentWorks()?.push(resp?.body);
+          next: (event) => {
+            if (event.type == HttpEventType.Response) {
+              if (event.status === 202 || event.status === 201) {
+                const resp = event as HttpResponse<{
+                  jobId: string;
+                  status: string;
+                  message: string;
+                }>;
+                this.pollProcessingStatus(resp.body?.jobId!);
+              } else if (event.status === 200) {
+                this.notificationService.addSuccessNotification(
+                  `File ${selectedFile.name} successfully uploaded`,
+                );
+              }
             }
           },
           error: (err) => {
@@ -81,6 +90,34 @@ export class WorkspaceComponent implements OnInit {
       this.destroyRef.onDestroy(() => subscription.unsubscribe());
     }
     return;
+  }
+
+  private pollProcessingStatus(jobId: string) {
+    interval(1000)
+      .pipe(
+        switchMap(() =>
+          this.httpClient.get<StudentWork>(
+            `http://localhost:5000/api/studentwork/upload/status/${jobId}`,
+            {
+              observe: 'response',
+            },
+          ),
+        ),
+        takeWhile((response) => response.status === 202, true),
+      )
+      .subscribe({
+        next: (resp) => {
+          if (resp.status === 200) {
+            if (resp?.body) this.studentWorks()?.push(resp?.body);
+          }
+        },
+        error: (err) => {
+          this.notificationService.addErrorNotification(
+            'Error checking file status.',
+          );
+          console.log(err);
+        },
+      });
   }
 
   onFileDblClick(work: StudentWork) {

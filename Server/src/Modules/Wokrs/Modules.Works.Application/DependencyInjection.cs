@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Modules.Works.Application.UseCases.BulkExport;
+using Modules.Works.Application.UseCases.BulkImport;
 using Modules.Works.Application.UseCases.DeleteWork;
 using Modules.Works.Application.UseCases.GetAllWorks;
 using Modules.Works.Application.UseCases.GetSimilarityPercentage;
+using Modules.Works.Application.UseCases.GetUploadedWork;
 using Modules.Works.Application.UseCases.GetWorkById;
 using Modules.Works.Application.UseCases.UploadWork;
 
@@ -16,7 +19,10 @@ namespace Modules.Works.Application
 				.AddGetWorkById()
 				.AddGetSimilarityPercentage()
 				.AddGetAllWorks()
-				.AddDeleteWork();
+				.AddDeleteWork()
+				.AddBulkExport()
+				.AddBulkImport()
+				.AddGetUploadedWork();
 		}
 	}
 }

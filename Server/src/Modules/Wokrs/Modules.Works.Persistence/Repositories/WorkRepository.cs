@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit.Internals;
+using Microsoft.EntityFrameworkCore;
 using Modules.Works.Application.Contracts;
 using Modules.Works.Domain.Entities;
 using Modules.Works.Persistence.Data;
@@ -11,10 +12,10 @@ namespace Modules.Works.Persistence.Repositories
 			await context.Works.FindAsync(id);
 
 		public async Task<List<Work>> GetAllWorksAsync() =>
-			await context.Works.ToListAsync();
+			await context.Works.AsNoTracking().ToListAsync();
 
 		public async Task<List<Work>> GetWorksByStudentIdAsync(string id) =>
-			await context.Works.Where(w => w.StudentId == id).ToListAsync();
+			(List<Work>)await GetWorksByStudentIdAsyncCompiled(context, id).ToListAsync();
 
 		public async Task<Work> AddNewWorkAsync(Work work)
 		{
@@ -26,14 +27,14 @@ namespace Modules.Works.Persistence.Repositories
 
 		public async Task<bool> DeleteWorkAsync(Guid id)
 		{
-			var studentWork = await context.Works.FindAsync(id);
-
-			if (studentWork is null) return false;
-
-			context.Remove(studentWork);
-			await context.SaveChangesAsync();
-
-			return true;
+			var affectedRows = await context.Works
+				.Where(w => w.Id == id)
+				.ExecuteDeleteAsync();
+			return affectedRows > 0;
 		}
+
+		private static readonly Func<WorkDbContext, string, IAsyncEnumerable<Work>> GetWorksByStudentIdAsyncCompiled =
+			EF.CompileAsyncQuery((WorkDbContext context, string studentId) =>
+				context.Works.AsNoTracking().Where(w => w.StudentId == studentId));
 	}
 }

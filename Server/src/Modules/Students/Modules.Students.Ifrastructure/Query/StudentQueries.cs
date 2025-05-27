@@ -18,10 +18,13 @@ namespace Modules.Students.Infrastructure.Query
 
 		public Student GetStudentByWorkId(Guid id)
 		{
-			var student = userManager.Users.FirstOrDefault(u => u.WorksIds.Contains(id));
+			var student = userManager.Users
+				.FirstOrDefault(u => u.WorksIds.Any(workId => workId == id));
+
 			if (student is null) throw new StudentNotFoundException($"workId: {id}");
 			return student.ToDomain();
 		}
+
 		public async Task<Student> GetStudentByIdAsync(string id)
 		{
 			var student = await userManager.FindByIdAsync(id);
