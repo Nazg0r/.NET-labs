@@ -50,7 +50,8 @@ namespace TestsTools
 				var testConfig = new Dictionary<string, string>
 				{
 					["JWT:Secret"] = "gH2e3nE7A1Jr87Kv5G2JXyMPC1+jf0BZoD+zPrw3JwY=",
-					["JWT:Expires"] = "60"
+					["JWT:Expires"] = "60",
+					["UploadDir:Path"] = ".//..//Uploads"
 				};
 
 				config.AddInMemoryCollection(testConfig!);

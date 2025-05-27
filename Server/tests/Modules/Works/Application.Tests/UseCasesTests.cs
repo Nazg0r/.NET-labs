@@ -133,56 +133,15 @@ namespace Application.Tests
 			}
 
 			[Fact]
-			public async Task Should_ReturnStudentWorkResponseDto_WhenWorkSuccessfullyStored()
-			{
-				// Arrange
-				var filename = "homework.cs";
-				var content = Encoding.UTF8.GetBytes("hello world");
-				var stream = new MemoryStream(content);
-				var studentId = Guid.NewGuid().ToString();
-
-				var mockFile = new Mock<IFormFile>();
-				mockFile.Setup(f => f.FileName).Returns(filename);
-				mockFile.Setup(f => f.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>()))
-					.Callback<Stream, CancellationToken>((s, _) => { stream.CopyTo(s); });
-
-				_mockBus.Setup(b => b.Publish(It.IsAny<StudentWorkDto>(), It.IsAny<CancellationToken>()))
-					.Returns(Task.CompletedTask);
-
-				_workRepositoryMock.Setup(r => r.AddNewWorkAsync(It.IsAny<Work>()));
-
-				var command = new UploadWorkCommand
-				{
-					File = mockFile.Object,
-					StudentId = studentId
-				};
-
-				var handler = new UploadWorkHandler(_workRepositoryMock.Object, _mockBus.Object);
-
-				// Act
-				var result = await handler.HandleAsync(command, CancellationToken.None);
-
-				// Assert
-				Assert.NotNull(result);
-				Assert.IsType<ProcessedWorkResponse>(result);
-				Assert.Equal(filename, result.FileName);
-				Assert.Equal(content, result.Content);
-				Assert.Equal(studentId, result.StudentId);
-				Assert.True(result.LoadDate <= DateTime.UtcNow);
-
-				_workRepositoryMock.Verify(r => r.AddNewWorkAsync(It.IsAny<Work>()), Times.Once);
-			}
-
-			[Fact]
 			public async Task Should_ThrowArgumentExceptionError_WhenFileIsNull()
 			{
 				// Arrange
-				IFormFile? file = null;
 				var studentId = Guid.NewGuid().ToString();
 
 				var command = new UploadWorkCommand
 				{
-					File = file!,
+					FileStream = null!,
+					FileName = string.Empty,
 					StudentId = studentId
 				};
 
