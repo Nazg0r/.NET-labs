@@ -24,14 +24,14 @@ builder.AddWorksModuleInfrastructure();
 builder.AddWorksModulePersistence();
 
 if (!builder.Environment.IsEnvironment("Testing"))
-builder.Services.AddConfiguredMassTransit();
+    builder.Services.AddConfiguredMassTransit();
 builder.Services.AddConfiguredCors(config);
 builder.Services.AddConfiguredHangfire(config);
 
 builder.Services.AddExceptionHandler<ErrorHandler>();
 builder.Services.AddHealthChecks()
-	.AddNpgSql(config.GetConnectionString("Database")!)
-	.AddRedis(config.GetConnectionString("Cache")!);
+    .AddNpgSql(config.GetConnectionString("Database")!)
+    .AddRedis(config.GetConnectionString("Cache")!);
 
 var app = builder.Build();
 
@@ -49,7 +49,7 @@ app.UseExceptionHandler(opt => { });
 
 app.UseHealthChecks("/health", new HealthCheckOptions
 {
-	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
 app.Run();

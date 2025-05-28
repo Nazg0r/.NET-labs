@@ -1,7 +1,7 @@
 ﻿namespace BuildingBlocks.Contracts
 {
-	public interface ICommand
-	{
-		Guid Id { get; }
-	}
+    public interface ICommand
+    {
+        Guid Id { get; }
+    }
 }

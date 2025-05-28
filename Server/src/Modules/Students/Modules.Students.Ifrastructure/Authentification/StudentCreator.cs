@@ -7,15 +7,15 @@ using Modules.Students.Infrastructure.Identity;
 
 namespace Modules.Students.Infrastructure.Authentification
 {
-	public class StudentCreator(UserManager<StudentIdentity> userManager)
-		: IStudentCreator
-	{
-		public async Task CreateAsync(Student student, string password, CancellationToken cancellationToken = default)
-		{
-			var result = await userManager.CreateAsync(student.ToIdentity(), password);
+    public class StudentCreator(UserManager<StudentIdentity> userManager)
+        : IStudentCreator
+    {
+        public async Task CreateAsync(Student student, string password, CancellationToken cancellationToken = default)
+        {
+            var result = await userManager.CreateAsync(student.ToIdentity(), password);
 
-			if (!result.Succeeded)
-				throw new StudentCreationException();
-		}
-	}
+            if (!result.Succeeded)
+                throw new StudentCreationException();
+        }
+    }
 }

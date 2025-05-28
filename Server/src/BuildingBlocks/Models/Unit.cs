@@ -1,11 +1,11 @@
 ﻿namespace BuildingBlocks.Models
 {
-	public sealed class Unit
-	{
-		public static readonly Unit Value = new Unit();
+    public sealed class Unit
+    {
+        public static readonly Unit Value = new Unit();
 
-		private Unit()
-		{
-		}
-	}
+        private Unit()
+        {
+        }
+    }
 }

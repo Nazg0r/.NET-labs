@@ -15,194 +15,194 @@ namespace Application.Tests;
 
 public class UseCasesTests
 {
-	public class Register : UseCasesTests
-	{
-		private readonly Mock<IStudentCreator> _mockStudentCreator;
+    public class Register : UseCasesTests
+    {
+        private readonly Mock<IStudentCreator> _mockStudentCreator;
 
-		public Register()
-		{
-			_mockStudentCreator = new Mock<IStudentCreator>();
-		}
+        public Register()
+        {
+            _mockStudentCreator = new Mock<IStudentCreator>();
+        }
 
-		[Fact]
-		public async Task Should_RegisterStudent_WhenValidInput()
-		{
-			// Arrange
-			var password = "qwerty";
-			var command = new RegisterStudentCommand
-			{
-				Username = "johnDoe",
-				Name = "John",
-				Surname = "Doe",
-				Group = "IM-00",
-				Password = password
-			};
+        [Fact]
+        public async Task Should_RegisterStudent_WhenValidInput()
+        {
+            // Arrange
+            var password = "qwerty";
+            var command = new RegisterStudentCommand
+            {
+                Username = "johnDoe",
+                Name = "John",
+                Surname = "Doe",
+                Group = "IM-00",
+                Password = password
+            };
 
-			var handler = new RegisterStudentHandler(_mockStudentCreator.Object);
+            var handler = new RegisterStudentHandler(_mockStudentCreator.Object);
 
-			// Act
-			await handler.HandleAsync(command, CancellationToken.None);
+            // Act
+            await handler.HandleAsync(command, CancellationToken.None);
 
-			// Assert
-			_mockStudentCreator.Verify(m =>
-					m.CreateAsync(It.Is<Student>(s =>
-							s.Username == command.Username &&
-							s.Name == command.Name &&
-							s.Surname == command.Surname &&
-							s.Group == command.Group),
-						password,
-						CancellationToken.None),
-				Times.Once);
-		}
-	}
+            // Assert
+            _mockStudentCreator.Verify(m =>
+                    m.CreateAsync(It.Is<Student>(s =>
+                            s.Username == command.Username &&
+                            s.Name == command.Name &&
+                            s.Surname == command.Surname &&
+                            s.Group == command.Group),
+                        password,
+                        CancellationToken.None),
+                Times.Once);
+        }
+    }
 
-	public class Login : UseCasesTests
-	{
-		private readonly Mock<IStudentAuthenticator> _mockStudentAuthenticator;
-		private readonly Mock<IJwtTokenGenerator> _mockJwtTokenGenerator;
+    public class Login : UseCasesTests
+    {
+        private readonly Mock<IStudentAuthenticator> _mockStudentAuthenticator;
+        private readonly Mock<IJwtTokenGenerator> _mockJwtTokenGenerator;
 
-		public Login()
-		{
-			_mockStudentAuthenticator = new Mock<IStudentAuthenticator>();
-			_mockJwtTokenGenerator = new Mock<IJwtTokenGenerator>();
-		}
-
-
-		[Fact]
-		public async Task Should_ReturnLoginStudentResponse_WhenValidInput()
-		{
-			// Arrange
-			var password = "qwerty";
-			var command = new LoginStudentCommand
-			{
-				Username = "johnDoe",
-				Password = password
-			};
-			var student = new Student
-			{
-				Username = command.Username,
-				Name = "John",
-				Surname = "Doe",
-				Group = "IM-00"
-			};
-			var token = Guid.NewGuid().ToString();
-
-			_mockStudentAuthenticator.Setup(x =>
-				x.ValidateCredentialsAsync(command.Username, command.Password)).ReturnsAsync(student);
-
-			_mockJwtTokenGenerator.Setup(x =>
-				x.GenerateToken(student)).Returns(token);
-
-			_mockJwtTokenGenerator.Setup(x =>
-				x.GetTokenExpiry()).Returns(DateTime.Now.AddDays(7));
-
-			var handler = new LoginStudentHandler(
-				_mockJwtTokenGenerator.Object,
-				_mockStudentAuthenticator.Object);
-
-			// Act
-			var result = await handler.HandleAsync(command, CancellationToken.None);
-
-			// Assert
-			Assert.NotNull(result);
-			Assert.IsType<LoginStudentResponse>(result);
-			Assert.False(string.IsNullOrEmpty(result.Token));
-			Assert.Equal(token, result.Token);
-			Assert.True(result.ExpiresDate > DateTime.Now);
-			_mockStudentAuthenticator.Verify(x =>
-				x.ValidateCredentialsAsync(command.Username, command.Password), Times.Once);
-			_mockJwtTokenGenerator.Verify(x => x.GenerateToken(student), Times.Once);
-			_mockJwtTokenGenerator.Verify(x => x.GetTokenExpiry(), Times.Once);
-		}
-	}
-
-	public class GetStudentByUsername : UseCasesTests
-	{
-		private readonly Mock<IStudentQueries> _mockStudentQueries;
-		private readonly Mock<IRequestClient<GetStudentWorksRequest>> _mockClient;
-		private readonly Mock<Response<GetStudentWorksResponse>> _mockResponse;
-
-		public GetStudentByUsername()
-		{
-			_mockStudentQueries = new Mock<IStudentQueries>();
-			_mockClient = new Mock<IRequestClient<GetStudentWorksRequest>>();
-			_mockResponse = new Mock<Response<GetStudentWorksResponse>>();
-		}
-
-		[Fact]
-		public async Task Should_ReturnGetStudentByUsernameResponse_WhenUserExist()
-		{
-			// Arrange
-			var student = SharedTestsData.TestStudents.First();
-			var query = student.Username;
-			var response = SharedTestsData.TestStudentsWorks.First();
-
-			_mockStudentQueries.Setup(x =>
-				x.GetStudentByUsernameAsync(query)).ReturnsAsync(student);
-
-			_mockResponse.Setup(r => r.Message).Returns(response);
-
-			_mockClient
-				.Setup(x => x.GetResponse<GetStudentWorksResponse>(
-					It.IsAny<GetStudentWorksRequest>(),
-					It.IsAny<CancellationToken>(),
-					default(RequestTimeout))).ReturnsAsync(_mockResponse.Object);
+        public Login()
+        {
+            _mockStudentAuthenticator = new Mock<IStudentAuthenticator>();
+            _mockJwtTokenGenerator = new Mock<IJwtTokenGenerator>();
+        }
 
 
-			var handler = new GetStudentByUsernameHandler(_mockStudentQueries.Object, _mockClient.Object);
+        [Fact]
+        public async Task Should_ReturnLoginStudentResponse_WhenValidInput()
+        {
+            // Arrange
+            var password = "qwerty";
+            var command = new LoginStudentCommand
+            {
+                Username = "johnDoe",
+                Password = password
+            };
+            var student = new Student
+            {
+                Username = command.Username,
+                Name = "John",
+                Surname = "Doe",
+                Group = "IM-00"
+            };
+            var token = Guid.NewGuid().ToString();
 
-			// Act
-			var result = await handler.HandleAsync(query, CancellationToken.None);
+            _mockStudentAuthenticator.Setup(x =>
+                x.ValidateCredentialsAsync(command.Username, command.Password)).ReturnsAsync(student);
 
-			// Assert
-			Assert.NotNull(result);
-			Assert.IsType<GetStudentByUsernameResponse>(result);
-			Assert.Equal(student.Id.ToString(), result.Id);
-			Assert.Equal(student.Username, result.Username);
-			Assert.Equal(student.Name, result.Name);
-			Assert.Equal(student.Surname, result.Surname);
-			Assert.Equal(student.Group, result.Group);
-			Assert.Equal(response.Works, result.Works);
-			_mockStudentQueries.Verify(x =>
-				x.GetStudentByUsernameAsync(query), Times.Once);
-			_mockResponse.Verify(r => r.Message, Times.Once);
-			_mockClient.Verify(x => x.GetResponse<GetStudentWorksResponse>(
-				It.IsAny<GetStudentWorksRequest>(),
-				It.IsAny<CancellationToken>(),
-				default(RequestTimeout)), Times.Once);
+            _mockJwtTokenGenerator.Setup(x =>
+                x.GenerateToken(student)).Returns(token);
 
-		}
-	}
+            _mockJwtTokenGenerator.Setup(x =>
+                x.GetTokenExpiry()).Returns(DateTime.Now.AddDays(7));
 
-	public class GetStudentByWorkId : UseCasesTests
-	{
-		private readonly Mock<IStudentQueries> _mockStudentQueries;
+            var handler = new LoginStudentHandler(
+                _mockJwtTokenGenerator.Object,
+                _mockStudentAuthenticator.Object);
 
-		public GetStudentByWorkId()
-		{
-			_mockStudentQueries = new Mock<IStudentQueries>();
-		}
+            // Act
+            var result = await handler.HandleAsync(command, CancellationToken.None);
 
-		[Fact]
-		public async Task Should_ReturnAuthor_WhenUserExist()
-		{
-			// Arrange
-			var student = SharedTestsData.TestStudents.First();
-			var work = SharedTestsData.TestStudentsWorks.First().Works.First();
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<LoginStudentResponse>(result);
+            Assert.False(string.IsNullOrEmpty(result.Token));
+            Assert.Equal(token, result.Token);
+            Assert.True(result.ExpiresDate > DateTime.Now);
+            _mockStudentAuthenticator.Verify(x =>
+                x.ValidateCredentialsAsync(command.Username, command.Password), Times.Once);
+            _mockJwtTokenGenerator.Verify(x => x.GenerateToken(student), Times.Once);
+            _mockJwtTokenGenerator.Verify(x => x.GetTokenExpiry(), Times.Once);
+        }
+    }
 
-			_mockStudentQueries.Setup(x =>
-				x.GetStudentByWorkId(work.Id)).Returns(student);
+    public class GetStudentByUsername : UseCasesTests
+    {
+        private readonly Mock<IStudentQueries> _mockStudentQueries;
+        private readonly Mock<IRequestClient<GetStudentWorksRequest>> _mockClient;
+        private readonly Mock<Response<GetStudentWorksResponse>> _mockResponse;
 
-			var handler = new GetAuthorByWorkIdHandler(_mockStudentQueries.Object);
+        public GetStudentByUsername()
+        {
+            _mockStudentQueries = new Mock<IStudentQueries>();
+            _mockClient = new Mock<IRequestClient<GetStudentWorksRequest>>();
+            _mockResponse = new Mock<Response<GetStudentWorksResponse>>();
+        }
 
-			// Act
-			var result = await handler.HandleAsync(work.Id, CancellationToken.None);
+        [Fact]
+        public async Task Should_ReturnGetStudentByUsernameResponse_WhenUserExist()
+        {
+            // Arrange
+            var student = SharedTestsData.TestStudents.First();
+            var query = student.Username;
+            var response = SharedTestsData.TestStudentsWorks.First();
 
-			// Assert
-			Assert.NotNull(result);
-			Assert.IsType<string>(result);
-			Assert.Equal($"{student.Name} {student.Surname} {student.Group}", result);
-			_mockStudentQueries.Verify(x => x.GetStudentByWorkId(work.Id), Times.Once);
-		}
-	}
+            _mockStudentQueries.Setup(x =>
+                x.GetStudentByUsernameAsync(query)).ReturnsAsync(student);
+
+            _mockResponse.Setup(r => r.Message).Returns(response);
+
+            _mockClient
+                .Setup(x => x.GetResponse<GetStudentWorksResponse>(
+                    It.IsAny<GetStudentWorksRequest>(),
+                    It.IsAny<CancellationToken>(),
+                    default(RequestTimeout))).ReturnsAsync(_mockResponse.Object);
+
+
+            var handler = new GetStudentByUsernameHandler(_mockStudentQueries.Object, _mockClient.Object);
+
+            // Act
+            var result = await handler.HandleAsync(query, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<GetStudentByUsernameResponse>(result);
+            Assert.Equal(student.Id.ToString(), result.Id);
+            Assert.Equal(student.Username, result.Username);
+            Assert.Equal(student.Name, result.Name);
+            Assert.Equal(student.Surname, result.Surname);
+            Assert.Equal(student.Group, result.Group);
+            Assert.Equal(response.Works, result.Works);
+            _mockStudentQueries.Verify(x =>
+                x.GetStudentByUsernameAsync(query), Times.Once);
+            _mockResponse.Verify(r => r.Message, Times.Once);
+            _mockClient.Verify(x => x.GetResponse<GetStudentWorksResponse>(
+                It.IsAny<GetStudentWorksRequest>(),
+                It.IsAny<CancellationToken>(),
+                default(RequestTimeout)), Times.Once);
+
+        }
+    }
+
+    public class GetStudentByWorkId : UseCasesTests
+    {
+        private readonly Mock<IStudentQueries> _mockStudentQueries;
+
+        public GetStudentByWorkId()
+        {
+            _mockStudentQueries = new Mock<IStudentQueries>();
+        }
+
+        [Fact]
+        public async Task Should_ReturnAuthor_WhenUserExist()
+        {
+            // Arrange
+            var student = SharedTestsData.TestStudents.First();
+            var work = SharedTestsData.TestStudentsWorks.First().Works.First();
+
+            _mockStudentQueries.Setup(x =>
+                x.GetStudentByWorkId(work.Id)).Returns(student);
+
+            var handler = new GetAuthorByWorkIdHandler(_mockStudentQueries.Object);
+
+            // Act
+            var result = await handler.HandleAsync(work.Id, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<string>(result);
+            Assert.Equal($"{student.Name} {student.Surname} {student.Group}", result);
+            _mockStudentQueries.Verify(x => x.GetStudentByWorkId(work.Id), Times.Once);
+        }
+    }
 }

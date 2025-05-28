@@ -2,8 +2,8 @@
 
 namespace Modules.Works.Application.Contracts
 {
-	public interface ICsvParser
-	{
-		public List<Work> ParseCsv(Stream stream);
-	}
+    public interface ICsvParser
+    {
+        public List<Work> ParseCsv(Stream stream);
+    }
 }

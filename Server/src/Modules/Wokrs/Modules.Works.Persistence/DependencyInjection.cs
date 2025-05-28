@@ -9,26 +9,26 @@ using Modules.Works.Persistence.Repositories;
 
 namespace Modules.Works.Persistence
 {
-	public static class DependencyInjection
-	{
-		public static void AddWorksModulePersistence(this IHostApplicationBuilder builder)
-		{
-			var connectionString = builder.Configuration.GetConnectionString("Database");
-			var connectionStringCache = builder.Configuration.GetConnectionString("Cache")!;
+    public static class DependencyInjection
+    {
+        public static void AddWorksModulePersistence(this IHostApplicationBuilder builder)
+        {
+            var connectionString = builder.Configuration.GetConnectionString("Database");
+            var connectionStringCache = builder.Configuration.GetConnectionString("Cache")!;
 
-			builder.Services.AddDbContext<WorkDbContext>(
-				opt => opt.UseNpgsql(connectionString), ServiceLifetime.Singleton);
+            builder.Services.AddDbContext<WorkDbContext>(
+                opt => opt.UseNpgsql(connectionString), ServiceLifetime.Singleton);
 
-			builder.Services.AddSingleton<IWorkRepository, WorkRepository>();
-			builder.Services.Decorate<IWorkRepository, CachedWorkRepository>();
-			builder.Services.AddSingleton<IJobRepository, JobRepository>();
+            builder.Services.AddSingleton<IWorkRepository, WorkRepository>();
+            builder.Services.Decorate<IWorkRepository, CachedWorkRepository>();
+            builder.Services.AddSingleton<IJobRepository, JobRepository>();
 
-			builder.Services.AddStackExchangeRedisCache(opt =>
-			{
-				opt.Configuration = connectionStringCache;
-			});
+            builder.Services.AddStackExchangeRedisCache(opt =>
+            {
+                opt.Configuration = connectionStringCache;
+            });
 
-			builder.Services.AddScoped<IBulkOperations, BulkOperations>();
-		}
-	}
+            builder.Services.AddScoped<IBulkOperations, BulkOperations>();
+        }
+    }
 }
