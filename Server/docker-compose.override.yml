@@ -46,7 +46,7 @@ services:
       - distributedCache
       - rabbitmq 
     ports:
-      - "6000:5000"
+      - "5050:5000"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
