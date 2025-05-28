@@ -5,6 +5,7 @@ import { Chart } from 'chart.js/auto';
 import { NotificationService } from '../../../notifications/notification.service';
 import { switchMap } from 'rxjs';
 import { StudentWork } from '../../studentWork.model';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -25,20 +26,20 @@ export class DetailsService {
   collectStats(fileId: string) {
     const subscription = this.httpClient
       .get<PlagiarismDetails[]>(
-        `http://localhost:5000/api/studentwork/plagiarism/${fileId}`,
+        `${environment.apiUrl}/api/studentwork/plagiarism/${fileId}`,
       )
       .pipe(
         switchMap((resp1) => {
           this.plagiarismStats.set(resp1);
           return this.httpClient.get(
-            `http://localhost:5000/api/student/work/${fileId}`,
+            `${environment.apiUrl}/api/student/work/${fileId}`,
             { responseType: 'text' },
           );
         }),
         switchMap((resp2) => {
           this.author.set(resp2);
           return this.httpClient.get<StudentWork>(
-            `http://localhost:5000/api/studentwork/${fileId}`,
+            `${environment.apiUrl}/api/studentwork/${fileId}`,
           );
         }),
       )

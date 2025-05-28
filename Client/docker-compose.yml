@@ -1,0 +1,8 @@
+services:
+  client:
+    container_name: client
+    environment:
+      API_URL: http://localhost:5050
+    build: .
+    ports:
+      - "4200:4200"
