@@ -5,9 +5,15 @@ services:
   distributedCache:
     image: redis:latest
 
-  rebbitmq:
+  rabbitmq:
      image: rabbitmq:3-management
 
+
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: src/Application/Aggregator/API/Dockerfile
 
 volumes:
     postgres: 
