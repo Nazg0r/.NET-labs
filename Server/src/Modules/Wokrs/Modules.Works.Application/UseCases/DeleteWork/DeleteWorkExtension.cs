@@ -2,12 +2,12 @@
 
 namespace Modules.Works.Application.UseCases.DeleteWork
 {
-	public static class DeleteWorkExtension
-	{
-		public static IServiceCollection AddDeleteWork(this IServiceCollection services)
-		{
-			services.AddScoped<DeleteWorkHandler>();
-			return services;
-		}
-	}
+    public static class DeleteWorkExtension
+    {
+        public static IServiceCollection AddDeleteWork(this IServiceCollection services)
+        {
+            services.AddScoped<DeleteWorkHandler>();
+            return services;
+        }
+    }
 }

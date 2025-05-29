@@ -2,6 +2,6 @@
 
 namespace Modules.Students.Domain.Exceptions
 {
-	public class StudentNotFoundException(string identity)
-		: NotFoundException($"Student with {identity} not found");
+    public class StudentNotFoundException(string identity)
+        : NotFoundException($"Student with {identity} not found");
 }

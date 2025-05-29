@@ -10,19 +10,19 @@ using Modules.Works.Application.UseCases.UploadWork;
 
 namespace Modules.Works.Application
 {
-	public static class DependencyInjection
-	{
-		public static void AddWorksModuleApplication(this IHostApplicationBuilder builder)
-		{
-			builder.Services
-				.AddUploadWork()
-				.AddGetWorkById()
-				.AddGetSimilarityPercentage()
-				.AddGetAllWorks()
-				.AddDeleteWork()
-				.AddBulkExport()
-				.AddBulkImport()
-				.AddGetUploadedWork();
-		}
-	}
+    public static class DependencyInjection
+    {
+        public static void AddWorksModuleApplication(this IHostApplicationBuilder builder)
+        {
+            builder.Services
+                .AddUploadWork()
+                .AddGetWorkById()
+                .AddGetSimilarityPercentage()
+                .AddGetAllWorks()
+                .AddDeleteWork()
+                .AddBulkExport()
+                .AddBulkImport()
+                .AddGetUploadedWork();
+        }
+    }
 }

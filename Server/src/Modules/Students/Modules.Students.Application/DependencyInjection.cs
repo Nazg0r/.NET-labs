@@ -7,18 +7,18 @@ using Modules.Students.Application.UseCases.Register;
 
 namespace Modules.Students.Application
 {
-	public static class DependencyInjection
-	{
-		public static void AddStudentModuleApplication(this IHostApplicationBuilder builder)
-		{
-			var encryptionKey = builder.Configuration["JWT:Secret"];
+    public static class DependencyInjection
+    {
+        public static void AddStudentModuleApplication(this IHostApplicationBuilder builder)
+        {
+            var encryptionKey = builder.Configuration["JWT:Secret"];
 
-			builder.Services.AddGetStudentByUsername()
-				.AddGetStudentByWorkId()
-				.AddRegisterStudent()
-				.AddLoginStudent();
+            builder.Services.AddGetStudentByUsername()
+                .AddGetStudentByWorkId()
+                .AddRegisterStudent()
+                .AddLoginStudent();
 
-			builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
-		}
-	}
+            builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        }
+    }
 }

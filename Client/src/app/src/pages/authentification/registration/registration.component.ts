@@ -2,14 +2,13 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { routes } from '../../../../app.routes';
 import { Router } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-registration',
@@ -91,7 +90,7 @@ export class RegistrationComponent implements OnInit {
     };
 
     this.httpClient
-      .post('http://localhost:5000/api/student/register', userData, {
+      .post(`${environment.apiUrl}/api/student/register`, userData, {
         observe: 'response',
       })
       .subscribe({

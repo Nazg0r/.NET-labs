@@ -5,21 +5,21 @@ using Modules.Works.Infrastructure.Jobs.Shared;
 
 namespace Modules.Works.Infrastructure.Jobs
 {
-	public class ImportDataJob(BulkImportHandler handler)
-	{
-		public async Task ProcessAsync(string filePath)
-		{
-			await using var stream = ReadFile.Read(filePath);
+    public class ImportDataJob(BulkImportHandler handler)
+    {
+        public async Task ProcessAsync(string filePath)
+        {
+            await using var stream = ReadFile.Read(filePath);
 
-			var command = new BulkImportCommand
-			{
-				FileStream = stream,
-				FileName = filePath[Length.GuidLength..]
-			};
+            var command = new BulkImportCommand
+            {
+                FileStream = stream,
+                FileName = filePath[Length.GuidLength..]
+            };
 
-			await handler.HandleAsync(command, CancellationToken.None);
+            await handler.HandleAsync(command, CancellationToken.None);
 
-			File.Delete(filePath);
-		}
-	}
+            File.Delete(filePath);
+        }
+    }
 }

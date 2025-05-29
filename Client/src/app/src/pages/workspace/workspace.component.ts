@@ -14,6 +14,7 @@ import { NotificationService } from '../notifications/notification.service';
 import { FormsModule } from '@angular/forms';
 import { DetailsComponent } from './student-work/details/details.component';
 import { interval, switchMap, takeWhile } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-workspace',
@@ -56,7 +57,7 @@ export class WorkspaceComponent implements OnInit {
 
       const subscription = this.httpClient
         .post<StudentWork | { jobId: string; status: string; message: string }>(
-          `http://localhost:5000/api/studentwork/upload/${studentId}`,
+          `${environment.apiUrl}/api/studentwork/upload/${studentId}`,
           formData,
           {
             observe: 'events',
@@ -97,7 +98,7 @@ export class WorkspaceComponent implements OnInit {
       .pipe(
         switchMap(() =>
           this.httpClient.get<StudentWork>(
-            `http://localhost:5000/api/studentwork/upload/status/${jobId}`,
+            `${environment.apiUrl}/api/studentwork/upload/status/${jobId}`,
             {
               observe: 'response',
             },

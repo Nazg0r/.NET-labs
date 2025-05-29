@@ -6,13 +6,13 @@ using Modules.Works.Infrastructure.Jobs;
 
 namespace Modules.Works.Infrastructure
 {
-	public static class DependencyInjection
-	{
-		public static void AddWorksModuleInfrastructure(this IHostApplicationBuilder builder)
-		{
-			builder.Services.AddScoped<ICsvParser, CsvParser>();
-			builder.Services.AddScoped<ImportDataJob>();
-			builder.Services.AddScoped<UploadFileJob>();
-		}
-	}
+    public static class DependencyInjection
+    {
+        public static void AddWorksModuleInfrastructure(this IHostApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<ICsvParser, CsvParser>();
+            builder.Services.AddScoped<ImportDataJob>();
+            builder.Services.AddScoped<UploadFileJob>();
+        }
+    }
 }

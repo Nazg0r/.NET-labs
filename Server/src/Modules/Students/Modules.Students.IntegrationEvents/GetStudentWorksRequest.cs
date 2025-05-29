@@ -1,4 +1,4 @@
 ﻿namespace Modules.Students.IntegrationEvents
 {
-	public record GetStudentWorksRequest(string id);
+    public record GetStudentWorksRequest(string id);
 }

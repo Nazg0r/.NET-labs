@@ -1,0 +1,80 @@
+services:
+  postgresDb:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgresDb
+    restart: always
+    ports:
+     - "5433:5432"
+    volumes:
+     - postgres:/var/lib/postgresql/data/
+    networks:
+       - mynetwork
+  
+  distributedCache:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+    - "6379:6379"
+    networks:
+       - mynetwork
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+       - mynetwork
+
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: Server/
+      dockerfile: src/Application/Aggregator/API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=postgresDb;Port=5432;Database=postgresDb;User Id=postgres;Password=postgres;IncludeErrorDetail=true
+      - ConnectionStrings__Cache=distributedCache:6379
+      - ASPNETCORE_URLS=http://+:5000
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+    depends_on:
+      - postgresDb
+      - distributedCache
+      - rabbitmq 
+    ports:
+      - "5050:5000"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    networks:
+       - mynetwork
+
+  client:
+    container_name: client
+    environment:
+      API_URL: http://api:5050
+    build:
+      context: Client/
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+    postgres: 

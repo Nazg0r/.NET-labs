@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Student } from './student.model';
 import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class StudentInfoService {
       if (!payload?.UserName) return;
 
       this.httpClient
-        .get<Student>(`http://localhost:5000/api/student/${payload.UserName}`)
+        .get<Student>(`${environment.apiUrl}/api/student/${payload.UserName}`)
         .pipe(
           catchError((error) => {
             console.error('Error loading student:', error);

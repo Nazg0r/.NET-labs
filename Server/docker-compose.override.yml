@@ -10,19 +10,46 @@ services:
      - "5433:5432"
     volumes:
      - postgres:/var/lib/postgresql/data/
+    networks:
+       - mynetwork
   
   distributedCache:
     container_name: redis
     restart: always
     ports:
     - "6379:6379"
+    networks:
+       - mynetwork
 
-  rebbitmq:
+  rabbitmq:
     container_name: rabbitmq
     restart: always
     ports:
       - "15672:15672"
       - "5672:5672"
+    networks:
+       - mynetwork
+
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=postgresDb;Port=5432;Database=postgresDb;User Id=postgres;Password=postgres;IncludeErrorDetail=true
+      - ConnectionStrings__Cache=distributedCache:6379
+      - ASPNETCORE_URLS=http://+:5000
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+    depends_on:
+      - postgresDb
+      - distributedCache
+      - rabbitmq 
+    ports:
+      - "5050:5000"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
        - mynetwork
 

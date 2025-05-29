@@ -1,4 +1,4 @@
 ﻿namespace Modules.Works.IntegrationEvents
 {
-	public record WorkUploadedEvent(Guid workId, string studentId);
+    public record WorkUploadedEvent(Guid workId, string studentId);
 }
