@@ -1,0 +1,56 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore Server.sln
+      working-directory: ./Server
+
+    - name: Build
+      run: dotnet build Server.sln --no-restore
+      working-directory: ./Server
+
+    - name: Test
+      run: dotnet test Server.sln --configuration Release --collect:"XPlat Code Coverage"
+      working-directory: ./Server
+
+    - name: Install ReportGenerator
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      working-directory: ./Server
+
+    - name: Generate code coverage report
+      run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html
+      working-directory: ./Server
+
+    - name: Upload coverage report as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: coveragereport
+
+    - name: Linter
+      run: dotnet format analyzers Server.sln --no-restore --verbosity diagnostic
+      working-directory: ./Server
+
+    - name: Code style
+      run: dotnet format Server.sln --verify-no-changes --no-restore
+      working-directory: ./Server
