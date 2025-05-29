@@ -23,21 +23,22 @@ builder.AddWorksModuleApplication();
 builder.AddWorksModuleInfrastructure();
 builder.AddWorksModulePersistence();
 
-builder.Services.AddConfiguredCors(config);
-builder.Services.AddConfiguredHangfire(config);
 
 if (!builder.Environment.IsEnvironment("Testing"))
 {
+    builder.Services.AddConfiguredCors(config);
     builder.Services.AddConfiguredMassTransit();
-    builder.Services.AddExceptionHandler<ErrorHandler>();
+    builder.Services.AddConfiguredHangfire(config);
     builder.Services.AddHealthChecks()
         .AddNpgSql(config.GetConnectionString("Database")!)
         .AddRedis(config.GetConnectionString("Cache")!);
 }
 
+builder.Services.AddExceptionHandler<ErrorHandler>();
 var app = builder.Build();
 
-app.UseCors(config["CorsPolicy:Name"] ?? string.Empty);
+if (!builder.Environment.IsEnvironment("Testing"))
+    app.UseCors(config["CorsPolicy:Name"] ?? string.Empty);
 
 app.MapStudentEndpoints();
 app.MapWorkEndpoints();
@@ -45,14 +46,13 @@ app.MapWorkEndpoints();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHangfireDashboard();
+if (!builder.Environment.IsEnvironment("Testing"))
+    app.UseHangfireDashboard();
 
 app.UseExceptionHandler(opt => { });
 
-app.UseHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+if (!builder.Environment.IsEnvironment("Testing"))
+    app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 app.Run();
 
