@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Modules.Students.Application.Common.Models;
 using Modules.Students.Domain.Entities;
 using Modules.Works.Domain.Entities;
 using Modules.Works.IntegrationEvents;
@@ -13,7 +12,7 @@ namespace TestsTools
             new Student
             {
                 Id = Guid.NewGuid(),
-                Username = "johnDoe",
+                Username = "johnDoe33",
                 Name = "John",
                 Surname = "Doe",
                 Group = "IM-00",

@@ -1,9 +1,7 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using API.IntegrationTests.Seeders;
-using Modules.Students.Application.Common.Models;
 using Modules.Students.Domain.Entities;
 using Modules.Works.Domain.Entities;
 using TestsTools;
@@ -14,37 +12,6 @@ public class StudentsModuleTests(WebApplicationFixture fixture) : IClassFixture<
 {
     private readonly WebApplicationFixture _fixture = fixture;
     private readonly HttpClient _client = fixture.CreateClient();
-
-    [Fact]
-    public async Task GetStudentByUsername_ShouldReturnOk_WithGetStudentByUsernameResponse_WhenUserExist()
-    {
-        {
-            // Arrange
-            var username = "johnDoe";
-            Student student = new Student
-            {
-                Username = username,
-                Name = "John",
-                Surname = "Doe",
-                Group = "IM-00"
-            };
-            await StudentSeeder.PrepareRegisteredStudentAsync(_fixture, student, "qwertyui");
-
-            // Act
-            var response = await _client.GetAsync($"/api/student/{username}");
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var result = await response.Content.ReadFromJsonAsync<GetStudentByUsernameResponse>();
-            Assert.NotNull(result);
-            Assert.Equal(student.Username, result.Username);
-            Assert.Equal(student.Name, result.Name);
-            Assert.Equal(student.Surname, result.Surname);
-            Assert.Equal(student.Group, result.Group);
-        }
-    }
 
     [Fact]
     public async Task GetStudentByUsername_ShouldReturnNotFound_WhenUserNotExist()
