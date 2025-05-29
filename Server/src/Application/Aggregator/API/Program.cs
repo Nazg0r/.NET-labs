@@ -14,6 +14,7 @@ using Modules.Works.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
+var env = builder.Environment;
 
 builder.AddStudentModulePersistence();
 builder.AddStudentModuleInfrastructure();
@@ -23,12 +24,12 @@ builder.AddWorksModuleApplication();
 builder.AddWorksModuleInfrastructure();
 builder.AddWorksModulePersistence();
 
+builder.Services.AddConfiguredHangfire(config, env);
 
-if (!builder.Environment.IsEnvironment("Testing"))
+if (!env.IsEnvironment("Testing"))
 {
     builder.Services.AddConfiguredCors(config);
     builder.Services.AddConfiguredMassTransit();
-    builder.Services.AddConfiguredHangfire(config);
     builder.Services.AddHealthChecks()
         .AddNpgSql(config.GetConnectionString("Database")!)
         .AddRedis(config.GetConnectionString("Cache")!);
@@ -37,7 +38,7 @@ if (!builder.Environment.IsEnvironment("Testing"))
 builder.Services.AddExceptionHandler<ErrorHandler>();
 var app = builder.Build();
 
-if (!builder.Environment.IsEnvironment("Testing"))
+if (!env.IsEnvironment("Testing"))
     app.UseCors(config["CorsPolicy:Name"] ?? string.Empty);
 
 app.MapStudentEndpoints();
@@ -46,12 +47,11 @@ app.MapWorkEndpoints();
 app.UseAuthentication();
 app.UseAuthorization();
 
-if (!builder.Environment.IsEnvironment("Testing"))
-    app.UseHangfireDashboard();
+app.UseHangfireDashboard();
 
 app.UseExceptionHandler(opt => { });
 
-if (!builder.Environment.IsEnvironment("Testing"))
+if (!env.IsEnvironment("Testing"))
     app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 app.Run();
